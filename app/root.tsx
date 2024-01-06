@@ -8,10 +8,10 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 
-import styles from "~/styles/global.css";
+import tailwind from "~/tailwind.css";
 
 export const links: LinksFunction = () => [
-  {rel: 'stylesheet', href: styles },
+  { rel: 'stylesheet', href: tailwind },
 ];
 
 export default function App() {
@@ -23,12 +23,12 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <main role="application">
+      <div role="application">
         <Outlet />
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
-      </main>
+      </div>
     </html>
   );
 }
