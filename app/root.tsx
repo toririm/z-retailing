@@ -23,12 +23,14 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <div role="application">
-        <Outlet />
-        <ScrollRestoration />
-        <Scripts />
-        <LiveReload />
-      </div>
+      <body>
+        <main role="application">
+          <Outlet />
+          <ScrollRestoration />
+          <Scripts />
+          <LiveReload />
+        </main>
+      </body>
     </html>
   );
 }
