@@ -1,13 +1,14 @@
-import { LoaderFunctionArgs, redirect } from "@remix-run/cloudflare";
+import { redirect } from "@remix-run/cloudflare";
 import { Outlet } from "@remix-run/react";
 import { supabaseClient } from "~/supabase";
 import { getSession } from "~/utils/session.server";
+import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
 
 
 export const loader = async ({ context, request }: LoaderFunctionArgs) => {
   const userSession = await getSession(request.headers.get("Cookie"));
   if (!userSession.has("access_token")) {
-    return redirect("/login");
+    // return redirect("/login");
   }
   const {
     data: { user },
