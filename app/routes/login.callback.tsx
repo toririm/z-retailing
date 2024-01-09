@@ -1,5 +1,5 @@
 import { redirect } from "@remix-run/cloudflare";
-import { supabaseClient } from "~/supabase";
+import { supabaseClient } from "~/supabase.server";
 import { badRequest } from "~/utils/request.server";
 import { commitSession, getSession } from "~/utils/session.server";
 import type { LoaderFunctionArgs } from "@remix-run/cloudflare";

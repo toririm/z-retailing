@@ -1,6 +1,6 @@
 import { redirect } from "@remix-run/cloudflare";
 import { Outlet } from "@remix-run/react";
-import { supabaseClient } from "~/supabase";
+import { supabaseClient } from "~/supabase.server";
 import { getSession } from "~/utils/session.server";
 import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
 

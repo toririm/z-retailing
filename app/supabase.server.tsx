@@ -8,4 +8,4 @@ export const supabaseClient = (context: AppLoadContext) => {
       fetch: (...args) => fetch(...args),
     },
   });
-}
+};

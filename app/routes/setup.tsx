@@ -1,7 +1,7 @@
 import { Form, redirect } from "@remix-run/react";
 import { badRequest } from "~/utils/request.server";
 import type { ActionFunctionArgs } from "@remix-run/cloudflare";
-import { supabaseClient } from "~/supabase";
+import { supabaseClient } from "~/supabase.server";
 
 export const action = async ({ context, request }: ActionFunctionArgs) => {
   const form = await request.formData();
