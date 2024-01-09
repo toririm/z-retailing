@@ -60,14 +60,14 @@ export default function Index() {
   const yen = 800;
   return (
     <>
-      <div className="card bg-neutral text-neutral-content items-center w-full">
-        <div className="card-body">
-          <div className="">12月の利用料金</div>
-          <h2 className="card-title center">&yen;{yen}</h2>
+      <div className="w-full flex items-center justify-center m-3">
+        <div className="stat w-32">
+          <h2 className="stat-title">12月の利用料金</h2>
+          <p className="stat-value">&yen;{yen}</p>
         </div>
       </div>
-      <div className="w-full items-center">
-        <ul className="flex flex-wrap gap-8">
+      <div className="w-full pt-3">
+        <ul className="flex flex-wrap gap-8 justify-center">
           {mockData.map((data) => (
             <li className="card w-64 bg-base-100 shadow-xl" key={data.id}>
               <div className="card-body">

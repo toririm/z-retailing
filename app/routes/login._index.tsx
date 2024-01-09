@@ -1,7 +1,8 @@
-import { ActionFunctionArgs, redirect } from "@remix-run/cloudflare";
+import { redirect } from "@remix-run/cloudflare";
 import { Form, useActionData } from "@remix-run/react";
-import { supabaseClient } from "~/supabase";
+import { supabaseClient } from "~/supabase.server";
 import { badRequest } from "~/utils/request.server";
+import type { ActionFunctionArgs } from "@remix-run/cloudflare";
 
 export const meta = () => [
   { title: "ログイン | Z物販" },
@@ -29,7 +30,7 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
   const { data, error } = await supabaseClient(context).auth.signInWithOtp({
     email,
   });
-  return redirect("/login/wait");
+  return redirect("/login/wait", 303);
 };
 
 export default function Login() {
