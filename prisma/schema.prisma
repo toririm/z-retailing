@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider          = "prisma-client-js"
+  previewFeatures   = ["multiSchema"]
+}
+
+datasource db {
+  provider    = "postgresql"
+  url         = env("DATABASE_URL")
+  directUrl   = env("DIRECT_URL")
+  schemas     = ["public", "auth"]
+}
+
+model User {
+  id String @id // has relation with auth.users id
+  name String
+  admin Boolean @default(false)
+  createdAt DateTime @default(now())
+  purchases Purchase[]
+
+  @@schema("public")
+}
+
+model Item {
+  id String @id @default(cuid())
+  name String
+  price Int
+  createdAt DateTime @default(now())
+  deletedAt DateTime?
+  purchases Purchase[]
+
+  @@schema("public")
+}
+
+model Purchase {
+  id String @id @default(cuid())
+  user User @relation(fields: [userId], references: [id])
+  userId String
+  item Item @relation(fields: [itemId], references: [id])
+  itemId String
+  createdAt DateTime @default(now())
+  deletedAt DateTime?
+
+  @@schema("public")
+}
