@@ -5,26 +5,26 @@ import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { prismaClient } from "~/utils/prisma.server";
 
 export const loader = async ({ context, request }: LoaderFunctionArgs) => {
-  const user = await getUser(context, request);
-  if (!user) {
+  const authUser = await getUser(context, request);
+  if (!authUser) {
     return redirect("/login");
   }
   const prisma = prismaClient(context);
-  const data = await prisma.user.findUnique({
-    where: { authId: user.id },
+  const user = await prisma.user.findUnique({
+    where: { authId: authUser.id },
   });
-  if (!data) {
+  if (!user) {
     return redirect("/setup");
   }
-  console.log(data);
-  return data;
+  console.log(user);
+  return user;
 };
 
 export default function UserRoute() {
   return (
     <>
       <nav className="navbar bg-base-100">
-        <h1>Ｚ物販</h1>
+        <h1 className="btn btn-ghost text-xl">Ｚ物販</h1>
       </nav>
       <Outlet />
     </>
