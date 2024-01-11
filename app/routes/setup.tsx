@@ -62,7 +62,7 @@ export default function Setup() {
   const actionData = useActionData<typeof action>();
   return (
     <div className="h-screen flex items-center justify-center">
-      <div className="card bg-base-100 shadow-xl">
+      <div className="card card-bordered bg-base-100 shadow-xl">
         <Form method="post" className="card-body items-center">
           <h2 className="card-title">ニックネームを入れよう！</h2>
           <label className="from-control">

@@ -45,23 +45,26 @@ export const loader = async ({ context, request }: LoaderFunctionArgs) => {
     total += purchase.item.price;
   }
   console.log({ total, items, purchases });
-  return { total, items };
+  const thisMonth = dayjs().month() + 1;
+  return { thisMonth, total, items };
 };
 
 export default function Index() {
-  const { total, items } = useLoaderData<typeof loader>();
+  const { thisMonth, total, items } = useLoaderData<typeof loader>();
   return (
     <>
-      <div className="w-full flex items-center justify-center m-3">
-        <div className="stat w-32">
-          <h2 className="stat-title">12月の利用料金</h2>
-          <p className="stat-value">&yen;{total}</p>
+      <div className="w-full flex items-center justify-center mt-4 mb-2">
+        <div className="card card-bordered w-64 bg-base-100 shadow-xl">
+          <div className="stat card-body flex items-center justify-center">
+            <h2 className="stat-title">{thisMonth}月の利用料金</h2>
+            <p className="stat-value">&yen;{total}</p>
+          </div>
         </div>
       </div>
-      <div className="w-full pt-3">
+      <div className="w-full pt-3 h-screen">
         <ul className="flex flex-wrap gap-8 justify-center">
           {items.map((data) => (
-            <li className="card w-64 bg-base-100 shadow-xl" key={data.id}>
+            <li className="card card-bordered w-64 bg-base-100 shadow-xl" key={data.id}>
               <div className="card-body">
                 <div className="card-title">{data.name}</div>
                 <div className="card-actions justify-end">
