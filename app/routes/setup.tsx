@@ -35,13 +35,20 @@ export const action = async ({ context, request }: ActionFunctionArgs) => {
       errorMsg: "ログイン不正:メールドレスが登録されていません",
     });
   }
-  const data = await prisma.user.create({
-    data: {
-      authId: user.id,
-      name: nickname,
-      email: user.email,
-    },
-  });
+  try {
+    const data = await prisma.user.create({
+      data: {
+        authId: user.id,
+        name: nickname,
+        email: user.email,
+      },
+    });
+  } catch (e) {
+    return badRequest({
+      nickname: "",
+      errorMsg: "既に登録されています",
+    });
+  }
   return redirect("/user");
 }
 
