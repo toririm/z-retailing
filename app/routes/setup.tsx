@@ -44,6 +44,7 @@ export const action = async ({ context, request }: ActionFunctionArgs) => {
       },
     });
   } catch (e) {
+    console.log(e);
     return badRequest({
       nickname: "",
       errorMsg: "既に登録されています",
