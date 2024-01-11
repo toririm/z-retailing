@@ -17,6 +17,7 @@ export const loader = async ({ context, request }: LoaderFunctionArgs) => {
     return redirect("/setup");
   }
   console.log(data);
+  return data;
 };
 
 export default function UserRoute() {
