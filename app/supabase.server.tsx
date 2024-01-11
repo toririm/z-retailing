@@ -1,5 +1,6 @@
 import { AppLoadContext } from "@remix-run/cloudflare";
 import { createClient } from "@supabase/supabase-js";
+import { getSession } from "./utils/session.server";
 
 export const supabaseClient = (context: AppLoadContext) => {
   const env = context.env as Env;
@@ -9,3 +10,22 @@ export const supabaseClient = (context: AppLoadContext) => {
     },
   });
 };
+
+
+export const getUser = async (context: AppLoadContext, request: Request) => {
+  const supabase = supabaseClient(context);
+  const userSession = await getSession(request.headers.get("Cookie"));
+  if (!userSession.has("access_token")) {
+    return null;
+  }
+  const {
+    data: { user },
+    error
+  } = await supabase.auth.getUser(
+    userSession.get("access_token")
+  );
+  if (!user) {
+    return null;
+  }
+  return user;
+}

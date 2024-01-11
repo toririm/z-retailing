@@ -5,6 +5,11 @@ import { supabaseClient } from "~/supabase.server";
 import { getSession } from "~/utils/session.server";
 import { prismaClient } from "~/utils/prisma.server";
 
+export const meta = () => [
+  { title: "ニックネームを入れよう！ | Z物販" },
+  { name: "description", content: "ニックネームを入れよう！" },
+];
+
 export const action = async ({ context, request }: ActionFunctionArgs) => {
   const form = await request.formData();
   const nickname = form.get("nickname");
