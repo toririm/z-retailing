@@ -37,7 +37,7 @@ export default function Login() {
   const actionData = useActionData<typeof action>();
   return (
     <div className="h-screen flex justify-center items-center">
-      <div className="card bg-base-100 shadow-xl">
+      <div className="card card-bordered bg-base-100 shadow-xl">
         <Form method="post" className="card-body items-center text-center">
           <h2 className="card-title">Z物販 ログイン</h2>
           <label className="from-control">

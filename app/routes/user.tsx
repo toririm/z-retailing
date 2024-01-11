@@ -1,22 +1,23 @@
 import { redirect } from "@remix-run/cloudflare";
 import { Outlet } from "@remix-run/react";
-import { supabaseClient } from "~/supabase.server";
-import { getSession } from "~/utils/session.server";
+import { getUser } from "~/supabase.server";
 import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
-
+import { prismaClient } from "~/utils/prisma.server";
 
 export const loader = async ({ context, request }: LoaderFunctionArgs) => {
-  const userSession = await getSession(request.headers.get("Cookie"));
-  if (!userSession.has("access_token")) {
-    // return redirect("/login");
+  const user = await getUser(context, request);
+  if (!user) {
+    return redirect("/login");
   }
-  const {
-    data: { user },
-    error
-  } = await supabaseClient(context).auth.getUser(
-    userSession.get("access_token")
-  );
-  return { user };
+  const prisma = prismaClient(context);
+  const data = await prisma.user.findUnique({
+    where: { authId: user.id },
+  });
+  if (!data) {
+    return redirect("/setup");
+  }
+  console.log(data);
+  return data;
 };
 
 export default function UserRoute() {
