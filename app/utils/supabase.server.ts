@@ -24,7 +24,6 @@ export const getUser = async (context: AppLoadContext, request: Request) => {
   }
   const {
     data: { user },
-    error,
   } = await supabase.auth.getUser(userSession.get("access_token"));
   if (!user) {
     return null;

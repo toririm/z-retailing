@@ -21,7 +21,7 @@ export const loader = async ({ context, request }: LoaderFunctionArgs) => {
 };
 
 export default function UserRoute() {
-  const {admin} = useLoaderData<typeof loader>();
+  const { admin } = useLoaderData<typeof loader>();
   return (
     <>
       <nav className="navbar bg-base-100">

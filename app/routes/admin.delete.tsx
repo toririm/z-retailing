@@ -2,7 +2,6 @@ import { ActionFunctionArgs, redirect } from "@remix-run/cloudflare";
 import { prismaClient } from "~/utils/prisma.server";
 import { badRequest } from "~/utils/request.server";
 
-
 export const action = async ({ context, request }: ActionFunctionArgs) => {
   const form = await request.formData();
   const itemId = form.get("itemId");
