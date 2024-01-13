@@ -7,4 +7,4 @@ export const prismaClient = (context: AppLoadContext) => {
   return new PrismaClient({
     datasourceUrl: env.DATABASE_URL_WITH_ACCELERATE,
   }).$extends(withAccelerate());
-}
+};

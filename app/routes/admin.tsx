@@ -1,6 +1,6 @@
 import { LoaderFunctionArgs, redirect } from "@remix-run/cloudflare";
 import { Outlet } from "@remix-run/react";
-import { getUser } from "~/supabase.server"
+import { getUser } from "~/supabase.server";
 import { prismaClient } from "~/utils/prisma.server";
 
 export const loader = async ({ context, request }: LoaderFunctionArgs) => {
@@ -19,9 +19,9 @@ export const loader = async ({ context, request }: LoaderFunctionArgs) => {
     return redirect("/user");
   }
   return user;
-}
+};
 
-export default function UserRoute() {
+export default function AdminRoute() {
   return (
     <>
       <nav className="navbar bg-base-100">

@@ -4,13 +4,16 @@ import { getSession } from "./utils/session.server";
 
 export const supabaseClient = (context: AppLoadContext) => {
   const env = context.env as Env;
-  return createClient(env.SUPABASE_URL as string, env.SUPABASE_ANON_KEY as string, {
-    global: {
-      fetch: (...args) => fetch(...args),
+  return createClient(
+    env.SUPABASE_URL as string,
+    env.SUPABASE_ANON_KEY as string,
+    {
+      global: {
+        fetch: (...args) => fetch(...args),
+      },
     },
-  });
+  );
 };
-
 
 export const getUser = async (context: AppLoadContext, request: Request) => {
   const supabase = supabaseClient(context);
@@ -20,12 +23,10 @@ export const getUser = async (context: AppLoadContext, request: Request) => {
   }
   const {
     data: { user },
-    error
-  } = await supabase.auth.getUser(
-    userSession.get("access_token")
-  );
+    error,
+  } = await supabase.auth.getUser(userSession.get("access_token"));
   if (!user) {
     return null;
   }
   return user;
-}
+};

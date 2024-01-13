@@ -6,7 +6,7 @@ import type { ActionFunctionArgs } from "@remix-run/cloudflare";
 
 export const meta = () => [
   { title: "ログイン | Z物販" },
-  { name: "description", content: "Z物販のログインページ"}
+  { name: "description", content: "Z物販のログインページ" },
 ];
 
 export const action = async ({ request, context }: ActionFunctionArgs) => {
@@ -48,24 +48,26 @@ export default function Login() {
               name="email"
               type="email"
               placeholder="s9999999@u.tsukuba.ac.jp"
-              className={"input input-bordered" + (actionData?.errorMsg ? " input-error" : "")}
+              className={
+                "input input-bordered" +
+                (actionData?.errorMsg ? " input-error" : "")
+              }
               defaultValue={actionData?.email}
               autoComplete="off"
               required
             />
             <div className="label">
-                {actionData?.errorMsg ? (
-                  <span
-                    className="label-text-alt text-error"
-                    role="alert"
-                  >
-                    {actionData.errorMsg}
-                  </span>
-                ) : null}
+              {actionData?.errorMsg ? (
+                <span className="label-text-alt text-error" role="alert">
+                  {actionData.errorMsg}
+                </span>
+              ) : null}
             </div>
           </label>
           <div className="card-actions">
-            <button type="submit" className="btn btn-wide btn-info">ログイン</button>
+            <button type="submit" className="btn btn-wide btn-info">
+              ログイン
+            </button>
           </div>
         </Form>
       </div>

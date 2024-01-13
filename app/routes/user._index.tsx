@@ -1,4 +1,8 @@
-import { redirect, type LoaderFunctionArgs, type MetaFunction } from "@remix-run/cloudflare";
+import {
+  redirect,
+  type LoaderFunctionArgs,
+  type MetaFunction,
+} from "@remix-run/cloudflare";
 import { getUser } from "~/supabase.server";
 import { prismaClient } from "~/utils/prisma.server";
 import dayjs from "dayjs";
@@ -34,7 +38,8 @@ export const loader = async ({ context, request }: LoaderFunctionArgs) => {
     },
     where: {
       userId: user.id,
-      createdAt: { // startOfMonth <= createdAt < endOfMonth
+      createdAt: {
+        // startOfMonth <= createdAt < endOfMonth
         gte: startOfMonth,
         lt: endOfMonth,
       },
@@ -42,7 +47,10 @@ export const loader = async ({ context, request }: LoaderFunctionArgs) => {
     },
   });
   // ここでまとめてawaitする
-  const [itemsResult, purchasesResult] = await Promise.allSettled([itemsPromise, purchasesPromise]);
+  const [itemsResult, purchasesResult] = await Promise.allSettled([
+    itemsPromise,
+    purchasesPromise,
+  ]);
   if (itemsResult.status === "rejected") {
     throw itemsResult.reason;
   }
@@ -75,7 +83,10 @@ export default function Index() {
       <div className="w-full pt-3 h-screen">
         <ul className="flex flex-wrap gap-8 justify-center">
           {items.map((data) => (
-            <li className="card card-bordered w-64 bg-base-100 shadow-xl" key={data.id}>
+            <li
+              className="card card-bordered w-64 bg-base-100 shadow-xl"
+              key={data.id}
+            >
               <div className="card-body">
                 <div className="card-title">{data.name}</div>
                 <div className="card-actions justify-end">

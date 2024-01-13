@@ -23,10 +23,8 @@ export const action = async ({ context, request }: ActionFunctionArgs) => {
   const session = await getSession(request.headers.get("Cookie"));
   const {
     data: { user },
-    error
-  } = await supabase.auth.getUser(
-    session.get("access_token")
-  );
+    error,
+  } = await supabase.auth.getUser(session.get("access_token"));
   const prisma = prismaClient(context);
   if (!user) {
     return badRequest({
@@ -56,7 +54,7 @@ export const action = async ({ context, request }: ActionFunctionArgs) => {
     });
   }
   return redirect("/user");
-}
+};
 
 export default function Setup() {
   const actionData = useActionData<typeof action>();
@@ -80,16 +78,15 @@ export default function Setup() {
           </label>
           <div className="label">
             {actionData?.errorMsg ? (
-              <span
-                className="label-text-alt text-error"
-                role="alert"
-              >
+              <span className="label-text-alt text-error" role="alert">
                 {actionData.errorMsg}
               </span>
             ) : null}
           </div>
           <div className="card-actions p-3">
-            <button type="submit" className="btn btn-wide btn-info">登録</button>
+            <button type="submit" className="btn btn-wide btn-info">
+              登録
+            </button>
           </div>
         </Form>
       </div>

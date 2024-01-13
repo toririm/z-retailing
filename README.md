@@ -1,6 +1,7 @@
 # Z-retailing
 
 ## Prerequisites
+
 - Cloudflare
 - Supabase
 - Prisma Accelerate
