@@ -1,6 +1,7 @@
 import { AppLoadContext } from "@remix-run/cloudflare";
 import { createClient } from "@supabase/supabase-js";
-import { getSession } from "./utils/session.server";
+import { getSession } from "./session.server";
+import { Env } from "~/env";
 
 export const supabaseClient = (context: AppLoadContext) => {
   const env = context.env as Env;

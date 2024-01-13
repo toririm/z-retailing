@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/cloudflare";
 import { useLoaderData } from "@remix-run/react";
-import { supabaseClient } from "~/supabase.server";
+import { supabaseClient } from "~/utils/supabase.server";
 
 export const meta: MetaFunction = () => [
   { title: "トップ | Z物販" },

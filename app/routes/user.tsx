@@ -1,6 +1,6 @@
 import { redirect } from "@remix-run/cloudflare";
 import { Outlet } from "@remix-run/react";
-import { getUser } from "~/supabase.server";
+import { getUser } from "~/utils/supabase.server";
 import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { prismaClient } from "~/utils/prisma.server";
 

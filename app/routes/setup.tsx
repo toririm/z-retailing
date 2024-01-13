@@ -1,7 +1,7 @@
 import { Form, redirect, useActionData } from "@remix-run/react";
 import { badRequest } from "~/utils/request.server";
 import type { ActionFunctionArgs } from "@remix-run/cloudflare";
-import { supabaseClient } from "~/supabase.server";
+import { supabaseClient } from "~/utils/supabase.server";
 import { getSession } from "~/utils/session.server";
 import { prismaClient } from "~/utils/prisma.server";
 

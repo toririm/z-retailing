@@ -1,6 +1,6 @@
 import { redirect } from "@remix-run/cloudflare";
 import { Form, useActionData } from "@remix-run/react";
-import { supabaseClient } from "~/supabase.server";
+import { supabaseClient } from "~/utils/supabase.server";
 import { badRequest } from "~/utils/request.server";
 import type { ActionFunctionArgs } from "@remix-run/cloudflare";
 
