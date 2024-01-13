@@ -1,5 +1,9 @@
-import { redirect, type LoaderFunctionArgs, type MetaFunction } from "@remix-run/cloudflare";
-import { getUser } from "~/supabase.server";
+import {
+  redirect,
+  type LoaderFunctionArgs,
+  type MetaFunction,
+} from "@remix-run/cloudflare";
+import { getUser } from "~/utils/supabase.server";
 import { prismaClient } from "~/utils/prisma.server";
 import dayjs from "dayjs";
 import ja from "dayjs/locale/ja";
@@ -18,7 +22,8 @@ export const loader = async ({ context, request }: LoaderFunctionArgs) => {
     return redirect("/login");
   }
   const prisma = prismaClient(context);
-  const items = await prisma.item.findMany({
+  // 以降のDBアクセスは並列化する
+  const itemsPromise = prisma.item.findMany({
     where: {
       deletedAt: null,
     },
@@ -27,19 +32,33 @@ export const loader = async ({ context, request }: LoaderFunctionArgs) => {
   const startOfMonth = dayjs().startOf("month").toDate();
   const endOfMonth = dayjs().startOf("month").add(1, "month").toDate();
   console.log(startOfMonth, endOfMonth);
-  const purchases = await prisma.purchase.findMany({
+  const purchasesPromise = prisma.purchase.findMany({
     include: {
       item: true,
     },
     where: {
       userId: user.id,
-      createdAt: { // startOfMonth <= createdAt < endOfMonth
+      createdAt: {
+        // startOfMonth <= createdAt < endOfMonth
         gte: startOfMonth,
         lt: endOfMonth,
       },
       deletedAt: null,
     },
   });
+  // ここでまとめてawaitする
+  const [itemsResult, purchasesResult] = await Promise.allSettled([
+    itemsPromise,
+    purchasesPromise,
+  ]);
+  if (itemsResult.status === "rejected") {
+    throw itemsResult.reason;
+  }
+  if (purchasesResult.status === "rejected") {
+    throw purchasesResult.reason;
+  }
+  const items = itemsResult.value;
+  const purchases = purchasesResult.value;
   let total = 0;
   for (const purchase of purchases) {
     total += purchase.item.price;
@@ -64,7 +83,10 @@ export default function Index() {
       <div className="w-full pt-3 h-screen">
         <ul className="flex flex-wrap gap-8 justify-center">
           {items.map((data) => (
-            <li className="card card-bordered w-64 bg-base-100 shadow-xl" key={data.id}>
+            <li
+              className="card card-bordered w-64 bg-base-100 shadow-xl"
+              key={data.id}
+            >
               <div className="card-body">
                 <div className="card-title">{data.name}</div>
                 <div className="card-actions justify-end">

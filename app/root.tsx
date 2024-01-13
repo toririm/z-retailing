@@ -11,7 +11,7 @@ import {
 import tailwind from "~/tailwind.css";
 
 export const links: LinksFunction = () => [
-  { rel: 'stylesheet', href: tailwind },
+  { rel: "stylesheet", href: tailwind },
   { rel: "icon", href: "/favicon.png", type: "image/png" },
 ];
 

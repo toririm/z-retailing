@@ -1,30 +1,43 @@
 import { redirect } from "@remix-run/cloudflare";
-import { Outlet } from "@remix-run/react";
-import { getUser } from "~/supabase.server";
+import { Link, Outlet, useLoaderData } from "@remix-run/react";
+import { getUser } from "~/utils/supabase.server";
 import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { prismaClient } from "~/utils/prisma.server";
 
 export const loader = async ({ context, request }: LoaderFunctionArgs) => {
-  const user = await getUser(context, request);
-  if (!user) {
+  const authUser = await getUser(context, request);
+  if (!authUser) {
     return redirect("/login");
   }
   const prisma = prismaClient(context);
-  const data = await prisma.user.findUnique({
-    where: { authId: user.id },
+  const user = await prisma.user.findUnique({
+    where: { authId: authUser.id },
   });
-  if (!data) {
+  if (!user) {
     return redirect("/setup");
   }
-  console.log(data);
-  return data;
+  console.log(user);
+  return { admin: user.admin };
 };
 
 export default function UserRoute() {
+  const { admin } = useLoaderData<typeof loader>();
   return (
     <>
       <nav className="navbar bg-base-100">
-        <h1>Ｚ物販</h1>
+        <div className="navbar-start">
+          <h1 className="btn btn-ghost text-xl">Ｚ物販</h1>
+        </div>
+        <div className="navbar-end">
+          {admin ? (
+            <Link to="/admin" className="btn btn-ghost">
+              管理者ページ
+            </Link>
+          ) : null}
+          <Link to="/logout" className="btn btn-ghost">
+            ログアウト
+          </Link>
+        </div>
       </nav>
       <Outlet />
     </>
