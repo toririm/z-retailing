@@ -1,6 +1,6 @@
-import { AppLoadContext } from "@remix-run/cloudflare";
+import { AppLoadContext, redirect } from "@remix-run/cloudflare";
 import { createClient } from "@supabase/supabase-js";
-import { getSession } from "./session.server";
+import { destroySession, getSession } from "./session.server";
 import { Env } from "~/env";
 
 export const supabaseClient = (context: AppLoadContext) => {
@@ -30,4 +30,13 @@ export const getUser = async (context: AppLoadContext, request: Request) => {
     return null;
   }
   return user;
+};
+
+export const logout = async (request: Request, redirectUrl: string) => {
+  const userSession = await getSession(request.headers.get("Cookie"));
+  return redirect(redirectUrl, {
+    headers: {
+      "Set-Cookie": await destroySession(userSession),
+    },
+  });
 };
