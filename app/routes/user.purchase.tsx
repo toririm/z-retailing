@@ -1,12 +1,12 @@
 import { ActionFunctionArgs, redirect } from "@remix-run/cloudflare";
 import { prismaClient } from "~/utils/prisma.server";
 import { badRequest } from "~/utils/request.server";
-import { getAdmin } from "~/utils/supabase.server";
+import { getUser } from "~/utils/supabase.server";
 
 export const action = async ({ context, request }: ActionFunctionArgs) => {
-  const adminUser = await getAdmin(context, request);
-  if (!adminUser) {
-    return redirect("/user");
+  const user = await getUser(context, request);
+  if (!user) {
+    return redirect("/login");
   }
   const form = await request.formData();
   const itemId = form.get("itemId");
@@ -15,22 +15,19 @@ export const action = async ({ context, request }: ActionFunctionArgs) => {
       errorMsg: "フォームが正しく送信されませんでした",
     });
   }
+  const prisma = prismaClient(context);
   try {
-    const prisma = prismaClient(context);
-    const result = await prisma.item.update({
-      where: {
-        id: itemId,
-      },
+    await prisma.purchase.create({
       data: {
-        deletedAt: new Date(),
+        userId: user.id,
+        itemId,
       },
     });
-    console.log(result);
-    return redirect("/admin");
+    return redirect("/user");
   } catch (e) {
     console.log(e);
     return badRequest({
-      errorMsg: "削除に失敗しました",
+      errorMsg: "購入に失敗しました",
     });
   }
 };

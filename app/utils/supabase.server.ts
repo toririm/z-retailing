@@ -2,6 +2,7 @@ import { AppLoadContext, redirect } from "@remix-run/cloudflare";
 import { createClient } from "@supabase/supabase-js";
 import { destroySession, getSession } from "./session.server";
 import { Env } from "~/env";
+import { prismaClient } from "./prisma.server";
 
 export const supabaseClient = (context: AppLoadContext) => {
   const env = context.env as Env;
@@ -16,7 +17,10 @@ export const supabaseClient = (context: AppLoadContext) => {
   );
 };
 
-export const getUser = async (context: AppLoadContext, request: Request) => {
+export const getAuthUser = async (
+  context: AppLoadContext,
+  request: Request,
+) => {
   const supabase = supabaseClient(context);
   const userSession = await getSession(request.headers.get("Cookie"));
   if (!userSession.has("access_token")) {
@@ -38,4 +42,33 @@ export const logout = async (request: Request, redirectUrl: string) => {
       "Set-Cookie": await destroySession(userSession),
     },
   });
+};
+
+export const getAdmin = async (context: AppLoadContext, request: Request) => {
+  const authUser = await getAuthUser(context, request);
+  if (!authUser) {
+    return null;
+  }
+  const prisma = prismaClient(context);
+  const adminUser = await prisma.user.findUnique({
+    where: {
+      authId: authUser.id,
+      admin: true,
+    },
+  });
+  return adminUser;
+};
+
+export const getUser = async (context: AppLoadContext, request: Request) => {
+  const authUser = await getAuthUser(context, request);
+  if (!authUser) {
+    return null;
+  }
+  const prisma = prismaClient(context);
+  const user = await prisma.user.findUnique({
+    where: {
+      authId: authUser.id,
+    },
+  });
+  return user;
 };
