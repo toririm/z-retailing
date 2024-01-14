@@ -77,13 +77,15 @@ export default function Index() {
         <table className="table">
           <thead>
             <tr>
+              <th></th>
               <th>商品名</th>
               <th>価格</th>
             </tr>
           </thead>
           <tbody>
-            {items.map((item) => (
+            {items.map((item, index) => (
               <tr key={item.id}>
+                <th>{index + 1}</th>
                 <td>{item.name}</td>
                 <td>
                   <button
