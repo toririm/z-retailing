@@ -1,11 +1,11 @@
 import { redirect } from "@remix-run/cloudflare";
 import { Link, Outlet, useLoaderData } from "@remix-run/react";
-import { getUser } from "~/utils/supabase.server";
+import { getAuthUser } from "~/utils/supabase.server";
 import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { prismaClient } from "~/utils/prisma.server";
 
 export const loader = async ({ context, request }: LoaderFunctionArgs) => {
-  const authUser = await getUser(context, request);
+  const authUser = await getAuthUser(context, request);
   if (!authUser) {
     return redirect("/login");
   }

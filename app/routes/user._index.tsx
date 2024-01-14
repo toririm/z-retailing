@@ -7,7 +7,8 @@ import { getUser } from "~/utils/supabase.server";
 import { prismaClient } from "~/utils/prisma.server";
 import dayjs from "dayjs";
 import ja from "dayjs/locale/ja";
-import { useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData } from "@remix-run/react";
+import { modal } from "~/utils/modal.client";
 
 export const meta: MetaFunction = () => {
   return [
@@ -72,22 +73,56 @@ export default function Index() {
           </div>
         </div>
       </div>
-      <div className="w-full pt-3 h-screen">
-        <ul className="flex flex-wrap gap-8 justify-center">
-          {items.map((data) => (
-            <li
-              className="card card-bordered w-64 bg-base-100 shadow-xl"
-              key={data.id}
-            >
-              <div className="card-body">
-                <div className="card-title">{data.name}</div>
-                <div className="card-actions justify-end">
-                  <button className="btn btn-primary">&yen;{data.price}</button>
-                </div>
+      <div className="m-5">
+        <table className="table">
+          <thead>
+            <tr>
+              <th>商品名</th>
+              <th>価格</th>
+            </tr>
+          </thead>
+          <tbody>
+            {items.map((item) => (
+              <tr key={item.id}>
+                <td>{item.name}</td>
+                <td>
+                  <button
+                    className="btn btn-outline btn-sm btn-info"
+                    onClick={() => modal(`modal-${item.id}`).showModal()}
+                  >
+                    &yen; {item.price}
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {items.map((item) => (
+          <dialog key={item.id} className="modal" id={`modal-${item.id}`}>
+            <div className="modal-box">
+              <h3 className="font-bold text-lg">{item.name}を購入しますか？</h3>
+              <p>&yen; {item.price}</p>
+              <div className="modal-action">
+                <Form method="post" action="purchase">
+                  <input type="hidden" name="itemId" value={item.id} />
+                  <button
+                    className="btn btn-info"
+                    type="submit"
+                    onClick={() => modal(`modal-${item.id}`).close()}
+                  >
+                    購入
+                  </button>
+                </Form>
+                <form method="dialog">
+                  <button className="btn">キャンセル</button>
+                </form>
               </div>
-            </li>
-          ))}
-        </ul>
+            </div>
+            <form method="dialog" className="modal-backdrop">
+              <button>close</button>
+            </form>
+          </dialog>
+        ))}
       </div>
     </>
   );

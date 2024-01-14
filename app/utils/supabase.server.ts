@@ -17,7 +17,7 @@ export const supabaseClient = (context: AppLoadContext) => {
   );
 };
 
-export const getUser = async (context: AppLoadContext, request: Request) => {
+export const getAuthUser = async (context: AppLoadContext, request: Request) => {
   const supabase = supabaseClient(context);
   const userSession = await getSession(request.headers.get("Cookie"));
   if (!userSession.has("access_token")) {
@@ -42,7 +42,7 @@ export const logout = async (request: Request, redirectUrl: string) => {
 };
 
 export const getAdmin = async (context: AppLoadContext, request: Request) => {
-  const authUser = await getUser(context, request);
+  const authUser = await getAuthUser(context, request);
   if (!authUser) {
     return null;
   }
@@ -54,4 +54,18 @@ export const getAdmin = async (context: AppLoadContext, request: Request) => {
     },
   });
   return adminUser;
+};
+
+export const getUser = async (context: AppLoadContext, request: Request) => {
+  const authUser = await getAuthUser(context, request);
+  if (!authUser) {
+    return null;
+  }
+  const prisma = prismaClient(context);
+  const user = await prisma.user.findUnique({
+    where: {
+      authId: authUser.id,
+    },
+  });
+  return user;
 };
