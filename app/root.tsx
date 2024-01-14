@@ -25,12 +25,12 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <main role="application">
+        <div role="application">
           <Outlet />
           <ScrollRestoration />
           <Scripts />
           <LiveReload />
-        </main>
+        </div>
       </body>
     </html>
   );
