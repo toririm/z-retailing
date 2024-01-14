@@ -1,23 +1,40 @@
-import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/cloudflare";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  redirect,
+} from "@remix-run/cloudflare";
 import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import { prismaClient } from "~/utils/prisma.server";
 import dayjs from "dayjs";
 import ja from "dayjs/locale/ja";
 import { badRequest } from "~/utils/request.server";
 import { useState } from "react";
+import { getAdmin } from "~/utils/supabase.server";
 
-export const loader = async ({ context }: LoaderFunctionArgs) => {
+export const loader = async ({ context, request }: LoaderFunctionArgs) => {
+  const adminUserPromise = getAdmin(context, request);
   const prisma = prismaClient(context);
-  const items = await prisma.item.findMany({
+  const itemsPromise = await prisma.item.findMany({
     where: {
       deletedAt: null,
     },
   });
+  const [adminUser, items] = await Promise.all([
+    adminUserPromise,
+    itemsPromise,
+  ]);
+  if (!adminUser) {
+    return redirect("/user");
+  }
   console.log(items);
   return { items };
 };
 
 export const action = async ({ context, request }: ActionFunctionArgs) => {
+  const adminUser = await getAdmin(context, request);
+  if (!adminUser) {
+    return redirect("/user");
+  }
   const form = await request.formData();
   const name = form.get("name");
   const price = form.get("price");

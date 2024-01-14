@@ -2,6 +2,7 @@ import { AppLoadContext, redirect } from "@remix-run/cloudflare";
 import { createClient } from "@supabase/supabase-js";
 import { destroySession, getSession } from "./session.server";
 import { Env } from "~/env";
+import { prismaClient } from "./prisma.server";
 
 export const supabaseClient = (context: AppLoadContext) => {
   const env = context.env as Env;
@@ -38,4 +39,19 @@ export const logout = async (request: Request, redirectUrl: string) => {
       "Set-Cookie": await destroySession(userSession),
     },
   });
+};
+
+export const getAdmin = async (context: AppLoadContext, request: Request) => {
+  const authUser = await getUser(context, request);
+  if (!authUser) {
+    return null;
+  }
+  const prisma = prismaClient(context);
+  const adminUser = await prisma.user.findUnique({
+    where: {
+      authId: authUser.id,
+      admin: true,
+    },
+  });
+  return adminUser;
 };

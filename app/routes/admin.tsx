@@ -1,24 +1,13 @@
 import { LoaderFunctionArgs, redirect } from "@remix-run/cloudflare";
 import { Link, Outlet } from "@remix-run/react";
-import { getUser } from "~/utils/supabase.server";
-import { prismaClient } from "~/utils/prisma.server";
+import { getAdmin } from "~/utils/supabase.server";
 
 export const loader = async ({ context, request }: LoaderFunctionArgs) => {
-  const authUser = await getUser(context, request);
-  if (!authUser) {
-    return redirect("/login");
-  }
-  const prisma = prismaClient(context);
-  const user = await prisma.user.findUnique({
-    where: {
-      authId: authUser.id,
-      admin: true,
-    },
-  });
-  if (!user) {
+  const adminUser = await getAdmin(context, request);
+  if (!adminUser) {
     return redirect("/user");
   }
-  return user;
+  return {};
 };
 
 export default function AdminRoute() {

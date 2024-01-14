@@ -47,18 +47,10 @@ export const loader = async ({ context, request }: LoaderFunctionArgs) => {
     },
   });
   // ここでまとめてawaitする
-  const [itemsResult, purchasesResult] = await Promise.allSettled([
+  const [items, purchases] = await Promise.all([
     itemsPromise,
     purchasesPromise,
   ]);
-  if (itemsResult.status === "rejected") {
-    throw itemsResult.reason;
-  }
-  if (purchasesResult.status === "rejected") {
-    throw purchasesResult.reason;
-  }
-  const items = itemsResult.value;
-  const purchases = purchasesResult.value;
   let total = 0;
   for (const purchase of purchases) {
     total += purchase.item.price;

@@ -1,21 +1,11 @@
 import { ActionFunctionArgs, redirect } from "@remix-run/cloudflare";
 import { prismaClient } from "~/utils/prisma.server";
 import { badRequest } from "~/utils/request.server";
-import { getUser } from "~/utils/supabase.server";
+import { getAdmin } from "~/utils/supabase.server";
 
 export const action = async ({ context, request }: ActionFunctionArgs) => {
-  const authUser = await getUser(context, request);
-  if (!authUser) {
-    return redirect("/login");
-  }
-  const prisma = prismaClient(context);
-  const user = await prisma.user.findUnique({
-    where: {
-      authId: authUser.id,
-      admin: true,
-    },
-  });
-  if (!user) {
+  const adminUser = await getAdmin(context, request);
+  if (!adminUser) {
     return redirect("/user");
   }
   const form = await request.formData();
@@ -26,6 +16,7 @@ export const action = async ({ context, request }: ActionFunctionArgs) => {
     });
   }
   try {
+    const prisma = prismaClient(context);
     const result = await prisma.item.update({
       where: {
         id: itemId,
