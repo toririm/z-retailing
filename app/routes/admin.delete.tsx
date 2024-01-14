@@ -1,8 +1,23 @@
 import { ActionFunctionArgs, redirect } from "@remix-run/cloudflare";
 import { prismaClient } from "~/utils/prisma.server";
 import { badRequest } from "~/utils/request.server";
+import { getUser } from "~/utils/supabase.server";
 
 export const action = async ({ context, request }: ActionFunctionArgs) => {
+  const authUser = await getUser(context, request);
+  if (!authUser) {
+    return redirect("/login");
+  }
+  const prisma = prismaClient(context);
+  const user = await prisma.user.findUnique({
+    where: {
+      authId: authUser.id,
+      admin: true,
+    },
+  });
+  if (!user) {
+    return redirect("/user");
+  }
   const form = await request.formData();
   const itemId = form.get("itemId");
   if (typeof itemId !== "string") {
@@ -10,7 +25,6 @@ export const action = async ({ context, request }: ActionFunctionArgs) => {
       errorMsg: "フォームが正しく送信されませんでした",
     });
   }
-  const prisma = prismaClient(context);
   try {
     const result = await prisma.item.update({
       where: {
