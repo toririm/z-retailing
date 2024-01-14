@@ -20,20 +20,21 @@ export const loader = async ({ context }: LoaderFunctionArgs) => {
 export const action = async ({ context, request }: ActionFunctionArgs) => {
   const form = await request.formData();
   const name = form.get("name");
-  const price = Number(form.get("price"));
-  if (typeof name !== "string" || typeof price !== "number") {
+  const price = form.get("price");
+  if (typeof name !== "string" || typeof price !== "string") {
     return badRequest({
-      success: false,
-      name: "",
-      price,
       errorMsg: "フォームが正しく送信されませんでした",
     });
   }
   if (name.length === 0) {
     return badRequest({
-      name,
-      price,
       errorMsg: "商品名を入力してください",
+    });
+  }
+  const priceNum = parseInt(price);
+  if (isNaN(priceNum)) {
+    return badRequest({
+      errorMsg: "価格の値が不正です",
     });
   }
   const prisma = prismaClient(context);
@@ -41,20 +42,16 @@ export const action = async ({ context, request }: ActionFunctionArgs) => {
     const result = await prisma.item.create({
       data: {
         name,
-        price,
+        price: priceNum,
       },
     });
     console.log(result);
     return {
-      name: "",
-      price: 120,
       errorMsg: null,
     };
   } catch (e) {
     console.log(e);
     return badRequest({
-      name,
-      price,
       errorMsg: "登録に失敗しました",
     });
   }
@@ -65,11 +62,17 @@ export default function Admin() {
   const createItemResult = useActionData<typeof action>();
   const [inputItem, setInputItem] = useState({
     name: "",
-    price: 120,
+    price: "",
   });
   const Modal = (modalId: string) => {
     const modal = document.getElementById(modalId) as HTMLDialogElement;
     return modal;
+  };
+  const handleSubmit = () => {
+    setInputItem({
+      name: "",
+      price: "",
+    });
   };
   dayjs.locale(ja);
   return (
@@ -109,8 +112,7 @@ export default function Admin() {
                   type="text"
                   className="input input-sm input-bordered"
                   placeholder="商品名"
-                  id="name-input"
-                  value={createItemResult?.name ?? inputItem.name}
+                  value={inputItem.name}
                   onChange={(e) =>
                     setInputItem({ ...inputItem, name: e.target.value })
                   }
@@ -119,15 +121,14 @@ export default function Admin() {
               <td>
                 &yen;{" "}
                 <input
-                  type="number"
+                  type="text"
                   className="input input-sm input-bordered"
                   placeholder="120"
-                  id="price-input"
-                  value={createItemResult?.price ?? inputItem.price}
+                  value={inputItem.price}
                   onChange={(e) =>
                     setInputItem({
                       ...inputItem,
-                      price: Number(e.target.value),
+                      price: e.target.value,
                     })
                   }
                 />
@@ -135,7 +136,6 @@ export default function Admin() {
               <td></td>
               <td>
                 <button
-                  type="submit"
                   className="btn btn-outline btn-xs btn-success"
                   onClick={() => Modal("modal-add").showModal()}
                 >
@@ -166,10 +166,10 @@ export default function Admin() {
         <dialog className="modal" id="modal-add">
           <div className="modal-box">
             <h3 className="font-bold text-lg">商品を追加しますか？</h3>
-            <p>商品名: {inputItem.name}</p>
-            <p>価格: {inputItem.price}</p>
+            <p>商品名「{inputItem.name}」</p>
+            <p>価　格「&yen; {inputItem.price}」</p>
             <div className="modal-action">
-              <Form method="post">
+              <Form method="post" onSubmit={handleSubmit}>
                 <input
                   type="hidden"
                   name="name"
@@ -185,7 +185,7 @@ export default function Admin() {
                   onChange={(e) =>
                     setInputItem({
                       ...inputItem,
-                      price: Number(e.target.value),
+                      price: e.target.value,
                     })
                   }
                 />
@@ -212,18 +212,15 @@ export default function Admin() {
           <dialog key={item.id} className="modal" id={`modal-${item.id}`}>
             <div className="modal-box">
               <h3 className="font-bold text-lg">商品を削除しますか？</h3>
-              <p>商品名: {item.name}</p>
-              <p>価格: {item.price}</p>
+              <p>{item.name}</p>
+              <p>&yen; {item.price}</p>
               <div className="modal-action">
                 <Form method="post" action="delete">
                   <input type="hidden" name="itemId" value={item.id} />
                   <button
                     className="btn btn-error"
                     type="submit"
-                    onClick={() => {
-                      setInputItem({ name: "", price: 120 });
-                      Modal(`modal-${item.id}`).close();
-                    }}
+                    onClick={() => Modal(`modal-${item.id}`).close()}
                   >
                     削除
                   </button>
