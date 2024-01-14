@@ -17,7 +17,10 @@ export const supabaseClient = (context: AppLoadContext) => {
   );
 };
 
-export const getAuthUser = async (context: AppLoadContext, request: Request) => {
+export const getAuthUser = async (
+  context: AppLoadContext,
+  request: Request,
+) => {
   const supabase = supabaseClient(context);
   const userSession = await getSession(request.headers.get("Cookie"));
   if (!userSession.has("access_token")) {

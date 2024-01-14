@@ -3,7 +3,7 @@ import { prismaClient } from "~/utils/prisma.server";
 import { badRequest } from "~/utils/request.server";
 import { getUser } from "~/utils/supabase.server";
 
-export const action = async ({context, request}: ActionFunctionArgs) => {
+export const action = async ({ context, request }: ActionFunctionArgs) => {
   const user = await getUser(context, request);
   if (!user) {
     return redirect("/login");

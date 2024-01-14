@@ -10,6 +10,7 @@ import ja from "dayjs/locale/ja";
 import { badRequest } from "~/utils/request.server";
 import { useState } from "react";
 import { getAdmin } from "~/utils/supabase.server";
+import { modal } from "~/utils/modal.client";
 
 export const loader = async ({ context, request }: LoaderFunctionArgs) => {
   const adminUserPromise = getAdmin(context, request);
@@ -81,10 +82,6 @@ export default function Admin() {
     name: "",
     price: "",
   });
-  const Modal = (modalId: string) => {
-    const modal = document.getElementById(modalId) as HTMLDialogElement;
-    return modal;
-  };
   const handleSubmit = () => {
     setInputItem({
       name: "",
@@ -115,7 +112,7 @@ export default function Admin() {
                 <td>
                   <button
                     className="btn btn-xs btn-outline btn-error"
-                    onClick={() => Modal(`modal-${item.id}`).showModal()}
+                    onClick={() => modal(`modal-${item.id}`).showModal()}
                   >
                     削除
                   </button>
@@ -154,7 +151,7 @@ export default function Admin() {
               <td>
                 <button
                   className="btn btn-outline btn-xs btn-success"
-                  onClick={() => Modal("modal-add").showModal()}
+                  onClick={() => modal("modal-add").showModal()}
                 >
                   追加
                 </button>
@@ -209,9 +206,7 @@ export default function Admin() {
                 <button
                   className="btn btn-success"
                   type="submit"
-                  onClick={() => {
-                    Modal("modal-add").close();
-                  }}
+                  onClick={() => modal("modal-add").close()}
                 >
                   追加
                 </button>
@@ -237,7 +232,7 @@ export default function Admin() {
                   <button
                     className="btn btn-error"
                     type="submit"
-                    onClick={() => Modal(`modal-${item.id}`).close()}
+                    onClick={() => modal(`modal-${item.id}`).close()}
                   >
                     削除
                   </button>
