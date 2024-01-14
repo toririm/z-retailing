@@ -26,7 +26,9 @@ export default function UserRoute() {
     <>
       <nav className="navbar bg-base-100">
         <div className="navbar-start">
-          <h1 className="btn btn-ghost text-xl">Ｚ物販</h1>
+          <Link to="/user" className="btn btn-ghost text-xl">
+            Ｚ物販
+          </Link>
         </div>
         <div className="navbar-end">
           {admin ? (

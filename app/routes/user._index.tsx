@@ -7,7 +7,7 @@ import { getUser } from "~/utils/supabase.server";
 import { prismaClient } from "~/utils/prisma.server";
 import dayjs from "dayjs";
 import ja from "dayjs/locale/ja";
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, Link, useLoaderData } from "@remix-run/react";
 import { modal } from "~/utils/modal.client";
 
 export const meta: MetaFunction = () => {
@@ -66,12 +66,16 @@ export default function Index() {
   return (
     <>
       <div className="w-full flex items-center justify-center mt-4 mb-2">
-        <div className="card card-bordered w-64 bg-base-100 shadow-xl">
+        <Link
+          to="/user/history"
+          className="card card-bordered w-64 bg-base-100 shadow-xl"
+        >
           <div className="stat card-body flex items-center justify-center">
-            <h2 className="stat-title">{thisMonth}月の利用料金</h2>
+            <h2 className="font-bold">{thisMonth}月の利用料金</h2>
             <p className="stat-value">&yen;{total}</p>
+            <p className="stat-desc">クリックして履歴を確認</p>
           </div>
-        </div>
+        </Link>
       </div>
       <div className="m-5">
         <table className="table">

@@ -15,7 +15,9 @@ export default function AdminRoute() {
     <>
       <nav className="navbar bg-base-100">
         <div className="navbar-start">
-          <h1 className="btn btn-ghost text-xl">Ｚ物販 管理者ページ</h1>
+          <Link to="/admin" className="btn btn-ghost text-xl">
+            Ｚ物販 管理者ページ
+          </Link>
         </div>
         <div className="navbar-end">
           <Link to="/user" className="btn btn-ghost">
