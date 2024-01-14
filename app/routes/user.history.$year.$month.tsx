@@ -69,9 +69,11 @@ export default function UserHistoryYearMonth() {
   };
   const thisDate = dayjs()
     .year(year)
-    .month(month - 1);
+    .month(month - 1)
+    .startOf("month");
   const prevDate = getYM(thisDate.subtract(1, "month"));
   const nextDate = getYM(thisDate.add(1, "month"));
+  const current = new Date();
   return (
     <>
       <div>
@@ -93,12 +95,18 @@ export default function UserHistoryYearMonth() {
             <div className="join-item btn btn-sm btn-disabled">
               {`${year}.${month}`}
             </div>
+            {current > thisDate.add(1, "month").toDate() ? (
             <Link
               to={`/user/history/${nextDate.year}/${nextDate.month}`}
               className="join-item btn btn-sm"
             >
               {`${parseInt(nextDate.month)}月 ≫`}
             </Link>
+            ) : (
+              <div className="join-item btn btn-sm btn-disabled">
+                {`${parseInt(nextDate.month)}月 ≫`}
+              </div>
+            )}
           </div>
         </div>
       </div>
