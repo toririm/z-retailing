@@ -12,6 +12,11 @@ import { useState } from "react";
 import { getAdmin } from "~/utils/supabase.server";
 import { modal } from "~/utils/modal.client";
 
+export const meta = () => [
+  { title: "管理者ページ | Z物販" },
+  { name: "description", content: "管理者ページです" },
+];
+
 export const loader = async ({ context, request }: LoaderFunctionArgs) => {
   const adminUserPromise = getAdmin(context, request);
   const prisma = prismaClient(context);
