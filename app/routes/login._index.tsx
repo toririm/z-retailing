@@ -1,5 +1,5 @@
 import { redirect } from "@remix-run/cloudflare";
-import { Form, useActionData } from "@remix-run/react";
+import { Form, useActionData, useNavigation } from "@remix-run/react";
 import { supabaseClient } from "~/utils/supabase.server";
 import { badRequest } from "~/utils/request.server";
 import type { ActionFunctionArgs } from "@remix-run/cloudflare";
@@ -35,6 +35,7 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
 
 export default function Login() {
   const actionData = useActionData<typeof action>();
+  const navigation = useNavigation();
   return (
     <div className="h-screen flex justify-center items-center">
       <div className="card card-bordered bg-base-100 shadow-xl">
@@ -65,8 +66,16 @@ export default function Login() {
             </div>
           </label>
           <div className="card-actions">
-            <button type="submit" className="btn btn-wide btn-info">
-              ログイン
+            <button
+              type="submit"
+              className="btn btn-wide btn-info"
+              disabled={navigation.state !== "idle"}
+            >
+              {navigation.state !== "idle" ? (
+                <span className="loading loading-dots loading-md" />
+              ) : (
+                "ログイン"
+              )}
             </button>
           </div>
         </Form>
