@@ -81,7 +81,7 @@ export default function Index() {
 				<table className="table">
 					<thead>
 						<tr>
-							<th></th>
+							<th />
 							<th>商品名</th>
 							<th>価格</th>
 						</tr>
@@ -93,6 +93,7 @@ export default function Index() {
 								<td>{item.name}</td>
 								<td>
 									<button
+										type="button"
 										className="btn btn-outline btn-sm btn-info"
 										onClick={() => modal(`modal-${item.id}`).showModal()}
 									>
@@ -120,12 +121,14 @@ export default function Index() {
 									</button>
 								</Form>
 								<form method="dialog">
-									<button className="btn">キャンセル</button>
+									<button type="button" className="btn">
+										キャンセル
+									</button>
 								</form>
 							</div>
 						</div>
 						<form method="dialog" className="modal-backdrop">
-							<button>close</button>
+							<button type="button">close</button>
 						</form>
 					</dialog>
 				))}

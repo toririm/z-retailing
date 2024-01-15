@@ -49,10 +49,9 @@ export default function Login() {
 							name="email"
 							type="email"
 							placeholder="s9999999@u.tsukuba.ac.jp"
-							className={
-								"input input-bordered" +
-								(actionData?.errorMsg ? " input-error" : "")
-							}
+							className={`input input-bordered${
+								actionData?.errorMsg ? " input-error" : ""
+							}`}
 							defaultValue={actionData?.email}
 							autoComplete="off"
 							required

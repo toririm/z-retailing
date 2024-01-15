@@ -55,7 +55,7 @@ export const action = async ({ context, request }: ActionFunctionArgs) => {
 		});
 	}
 	const priceNum = parseInt(price);
-	if (isNaN(priceNum)) {
+	if (Number.isNaN(priceNum)) {
 		return badRequest({
 			errorMsg: "価格の値が不正です",
 		});
@@ -100,11 +100,11 @@ export default function Admin() {
 				<table className="table">
 					<thead>
 						<tr>
-							<th></th>
+							<th />
 							<th>商品名</th>
 							<th>価格</th>
 							<th>登録日時</th>
-							<th></th>
+							<th />
 						</tr>
 					</thead>
 					<tbody>
@@ -116,6 +116,7 @@ export default function Admin() {
 								<td>{dayjs(item.createdAt).format("YYYY-MM-DD HH:mm")}</td>
 								<td>
 									<button
+										type="button"
 										className="btn btn-xs btn-outline btn-error"
 										onClick={() => modal(`modal-${item.id}`).showModal()}
 									>
@@ -152,9 +153,10 @@ export default function Admin() {
 									}
 								/>
 							</td>
-							<td></td>
+							<td />
 							<td>
 								<button
+									type="button"
 									className="btn btn-outline btn-xs btn-success"
 									onClick={() => modal("modal-add").showModal()}
 								>
@@ -172,6 +174,7 @@ export default function Admin() {
 							fill="none"
 							viewBox="0 0 24 24"
 						>
+							<title>エラー</title>
 							<path
 								strokeLinecap="round"
 								strokeLinejoin="round"
@@ -217,12 +220,14 @@ export default function Admin() {
 								</button>
 							</Form>
 							<form method="dialog">
-								<button className="btn">キャンセル</button>
+								<button type="button" className="btn">
+									キャンセル
+								</button>
 							</form>
 						</div>
 					</div>
 					<form method="dialog" className="modal-backdrop">
-						<button>close</button>
+						<button type="button">close</button>
 					</form>
 				</dialog>
 				{items.map((item) => (
@@ -243,12 +248,14 @@ export default function Admin() {
 									</button>
 								</Form>
 								<form method="dialog">
-									<button className="btn">キャンセル</button>
+									<button type="button" className="btn">
+										キャンセル
+									</button>
 								</form>
 							</div>
 						</div>
 						<form method="dialog" className="modal-backdrop">
-							<button>close</button>
+							<button type="button">close</button>
 						</form>
 					</dialog>
 				))}

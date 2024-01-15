@@ -24,7 +24,7 @@ export const loader = async ({
 	}
 	const year = parseInt(params.year);
 	const month = parseInt(params.month);
-	if (isNaN(year) || isNaN(month)) {
+	if (Number.isNaN(year) || Number.isNaN(month)) {
 		return redirect("/user/history");
 	}
 	if (month < 1 || month > 12) {
@@ -114,7 +114,7 @@ export default function UserHistoryYearMonth() {
 				<table className="table">
 					<thead>
 						<tr>
-							<th></th>
+							<th />
 							<th>日時</th>
 							<th>商品名</th>
 							<th>価格</th>
@@ -130,8 +130,8 @@ export default function UserHistoryYearMonth() {
 							</tr>
 						))}
 						<tr>
-							<td></td>
-							<td></td>
+							<td />
+							<td />
 							<td>合計</td>
 							<td>
 								&yen;{" "}
