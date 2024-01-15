@@ -4,8 +4,8 @@ import { AppLoadContext } from "@remix-run/cloudflare";
 import { Env } from "~/env";
 
 export const prismaClient = (context: AppLoadContext) => {
-  const env = context.env as Env;
-  return new PrismaClient({
-    datasourceUrl: env.DATABASE_URL_WITH_ACCELERATE,
-  }).$extends(withAccelerate());
+	const env = context.env as Env;
+	return new PrismaClient({
+		datasourceUrl: env.DATABASE_URL_WITH_ACCELERATE,
+	}).$extends(withAccelerate());
 };

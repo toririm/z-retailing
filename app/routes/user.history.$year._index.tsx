@@ -1,5 +1,5 @@
 import { redirect } from "@remix-run/cloudflare";
 
 export const loader = () => {
-  return redirect("/user/history");
+	return redirect("/user/history");
 };
