@@ -58,24 +58,24 @@ export const loader = async ({ context, request }: LoaderFunctionArgs) => {
 	}
 	console.log({ total, items, purchases });
 	const thisMonth = dayjs().month() + 1;
-	return { thisMonth, total, items };
+	return { user, thisMonth, total, items };
 };
 
 export default function Index() {
-	const { thisMonth, total, items } = useLoaderData<typeof loader>();
+	const { user, thisMonth, total, items } = useLoaderData<typeof loader>();
 	return (
 		<>
 			<div className="w-full flex items-center justify-center mt-4 mb-2">
-				<Link
-					to="/user/history"
-					className="card card-bordered w-64 bg-base-100 shadow-xl"
-				>
+				<div className="card card-bordered w-64 bg-base-100 shadow-xl">
 					<div className="stat card-body flex items-center justify-center">
 						<h2 className="font-bold">{thisMonth}月の利用料金</h2>
-						<p className="stat-value">&yen;{total}</p>
-						<p className="stat-desc">クリックして履歴を確認</p>
+						<p className="stat-value">&yen; {total}</p>
+						<div className="stat-desc flex justify-between w-full">
+							<span>{user.name}さん</span>
+							<span>{dayjs().format("YYYY/M/D H:mm")}</span>
+						</div>
 					</div>
-				</Link>
+				</div>
 			</div>
 			<div className="m-5">
 				<table className="table">
