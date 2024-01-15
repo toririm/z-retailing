@@ -1,13 +1,16 @@
 import {
+	type ActionFunctionArgs,
 	type LoaderFunctionArgs,
 	type MetaFunction,
 	redirect,
 } from "@remix-run/cloudflare";
-import { Form, Link, useLoaderData } from "@remix-run/react";
+import { Form, Link, useActionData, useLoaderData } from "@remix-run/react";
 import dayjs from "dayjs";
 import ja from "dayjs/locale/ja";
+import { useEffect } from "react";
 import { modal } from "~/utils/modal.client";
 import { prismaClient } from "~/utils/prisma.server";
+import { badRequest } from "~/utils/request.server";
 import { getUser } from "~/utils/supabase.server";
 
 export const meta: MetaFunction = () => {
@@ -61,8 +64,53 @@ export const loader = async ({ context, request }: LoaderFunctionArgs) => {
 	return { user, thisMonth, total, items };
 };
 
+export const action = async ({ context, request }: ActionFunctionArgs) => {
+	const user = await getUser(context, request);
+	if (!user) {
+		return redirect("/login");
+	}
+	const form = await request.formData();
+	const itemId = form.get("itemId");
+	if (typeof itemId !== "string") {
+		return badRequest({
+			itemId,
+			success: false,
+			errorMsg: "フォームが正しく送信されませんでした",
+		});
+	}
+	const prisma = prismaClient(context);
+	try {
+		await prisma.purchase.create({
+			data: {
+				userId: user.id,
+				itemId,
+			},
+		});
+		return {
+			itemId,
+			success: true,
+			errorMsg: null,
+		};
+	} catch (e) {
+		console.log(e);
+		return badRequest({
+			itemId,
+			success: false,
+			errorMsg: "購入に失敗しました",
+		});
+	}
+};
+
 export default function Index() {
 	const { user, thisMonth, total, items } = useLoaderData<typeof loader>();
+	const actionData = useActionData<typeof action>();
+	useEffect(() => {
+		if (actionData?.success) {
+			modal("modal-success").showModal();
+		} else if (actionData?.errorMsg) {
+			modal("modal-error").showModal();
+		}
+	}, [actionData]);
 	return (
 		<>
 			<div className="w-full flex items-center justify-center mt-4 mb-2">
@@ -110,7 +158,7 @@ export default function Index() {
 							<h3 className="font-bold text-lg">{item.name}を購入しますか？</h3>
 							<p>&yen; {item.price}</p>
 							<div className="modal-action">
-								<Form method="post" action="purchase">
+								<Form method="post">
 									<input type="hidden" name="itemId" value={item.id} />
 									<button
 										className="btn btn-info"
@@ -132,6 +180,48 @@ export default function Index() {
 						</form>
 					</dialog>
 				))}
+				<dialog className="modal" id="modal-success">
+					<div className="modal-box">
+						<h3 className="font-bold text-lg">
+							{items.find((e) => e.id === actionData?.itemId)?.name}
+							を購入しました🎉
+						</h3>
+						<div className="modal-action">
+							<form method="dialog">
+								<button
+									type="button"
+									className="btn"
+									onClick={() => modal("modal-success").close()}
+								>
+									OK
+								</button>
+							</form>
+						</div>
+					</div>
+					<form method="dialog" className="modal-backdrop">
+						<button type="button">close</button>
+					</form>
+				</dialog>
+				<dialog className="modal" id="modal-error">
+					<div className="modal-box">
+						<h3 className="font-bold text-lg">⚠️購入に失敗しました🚨</h3>
+						<p>{actionData?.errorMsg}</p>
+						<div className="modal-action">
+							<form method="dialog">
+								<button
+									type="button"
+									className="btn"
+									onClick={() => modal("modal-error").close()}
+								>
+									OK
+								</button>
+							</form>
+						</div>
+					</div>
+					<form method="dialog" className="modal-backdrop">
+						<button type="button">close</button>
+					</form>
+				</dialog>
 			</div>
 		</>
 	);
