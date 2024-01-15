@@ -1,8 +1,8 @@
 import { redirect } from "@remix-run/cloudflare";
-import { supabaseClient } from "~/utils/supabase.server";
+import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { badRequest } from "~/utils/request.server";
 import { commitSession, getSession } from "~/utils/session.server";
-import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
+import { supabaseClient } from "~/utils/supabase.server";
 
 // this route is for handling the callback from the email magic link
 

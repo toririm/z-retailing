@@ -1,8 +1,8 @@
 import { AppLoadContext, redirect } from "@remix-run/cloudflare";
 import { createClient } from "@supabase/supabase-js";
-import { destroySession, getSession } from "./session.server";
 import { Env } from "~/env";
 import { prismaClient } from "./prisma.server";
+import { destroySession, getSession } from "./session.server";
 
 export const supabaseClient = (context: AppLoadContext) => {
 	const env = context.env as Env;

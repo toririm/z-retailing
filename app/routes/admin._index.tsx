@@ -4,13 +4,13 @@ import {
 	redirect,
 } from "@remix-run/cloudflare";
 import { Form, useActionData, useLoaderData } from "@remix-run/react";
-import { prismaClient } from "~/utils/prisma.server";
 import dayjs from "dayjs";
 import ja from "dayjs/locale/ja";
-import { badRequest } from "~/utils/request.server";
 import { useState } from "react";
-import { getAdmin } from "~/utils/supabase.server";
 import { modal } from "~/utils/modal.client";
+import { prismaClient } from "~/utils/prisma.server";
+import { badRequest } from "~/utils/request.server";
+import { getAdmin } from "~/utils/supabase.server";
 
 export const meta = () => [
 	{ title: "管理者ページ | Z物販" },

@@ -1,8 +1,8 @@
 import { redirect } from "@remix-run/cloudflare";
-import { Form, useActionData, useNavigation } from "@remix-run/react";
-import { supabaseClient } from "~/utils/supabase.server";
-import { badRequest } from "~/utils/request.server";
 import type { ActionFunctionArgs } from "@remix-run/cloudflare";
+import { Form, useActionData, useNavigation } from "@remix-run/react";
+import { badRequest } from "~/utils/request.server";
+import { supabaseClient } from "~/utils/supabase.server";
 
 export const meta = () => [
 	{ title: "ログイン | Z物販" },

@@ -1,9 +1,9 @@
-import { Form, redirect, useActionData, useNavigation } from "@remix-run/react";
-import { badRequest } from "~/utils/request.server";
 import type { ActionFunctionArgs } from "@remix-run/cloudflare";
-import { supabaseClient } from "~/utils/supabase.server";
-import { getSession } from "~/utils/session.server";
+import { Form, redirect, useActionData, useNavigation } from "@remix-run/react";
 import { prismaClient } from "~/utils/prisma.server";
+import { badRequest } from "~/utils/request.server";
+import { getSession } from "~/utils/session.server";
+import { supabaseClient } from "~/utils/supabase.server";
 
 export const meta = () => [
 	{ title: "ニックネームを入れよう！ | Z物販" },

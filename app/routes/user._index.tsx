@@ -1,14 +1,14 @@
 import {
-	redirect,
 	type LoaderFunctionArgs,
 	type MetaFunction,
+	redirect,
 } from "@remix-run/cloudflare";
-import { getUser } from "~/utils/supabase.server";
-import { prismaClient } from "~/utils/prisma.server";
+import { Form, Link, useLoaderData } from "@remix-run/react";
 import dayjs from "dayjs";
 import ja from "dayjs/locale/ja";
-import { Form, Link, useLoaderData } from "@remix-run/react";
 import { modal } from "~/utils/modal.client";
+import { prismaClient } from "~/utils/prisma.server";
+import { getUser } from "~/utils/supabase.server";
 
 export const meta: MetaFunction = () => {
 	return [
