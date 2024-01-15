@@ -2,5 +2,8 @@
 	"spellright.language": [],
 	"spellright.documentTypes": ["latex"],
 	"editor.defaultFormatter": "biomejs.biome",
-	"editor.formatOnSave": true
+	"editor.formatOnSave": true,
+	"editor.codeActionsOnSave": {
+		"source.organizeImports.biome": true
+	}
 }
