@@ -132,14 +132,14 @@ export default function UserHistoryYearMonth() {
 						<tr>
 							<td />
 							<td />
-							<td>合計</td>
-							<td>
+							<th>合計</th>
+							<th>
 								&yen;{" "}
 								{purchases.reduce(
 									(sum, purchase) => sum + purchase.item.price,
 									0,
 								)}
-							</td>
+							</th>
 						</tr>
 					</tbody>
 				</table>

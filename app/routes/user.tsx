@@ -30,18 +30,31 @@ export default function UserRoute() {
 						Ｚ物販
 					</Link>
 				</div>
-				<div className="navbar-end">
-					{admin ? (
-						<Link to="/admin" className="btn btn-ghost">
-							管理者ページ
-						</Link>
-					) : null}
-					<Link to="/logout" className="btn btn-ghost">
-						ログアウト
+				<div className="navbar-end mr-4">
+					<Link to="/user" className="btn btn-ghost">
+						ホーム
+					</Link>
+					<Link to="/user/history" className="btn btn-ghost">
+						履歴
 					</Link>
 				</div>
 			</nav>
 			<Outlet />
+			<div className="divider" />
+			<nav className="navbar bg-base-100 pb-7">
+				<div className="navbar-start ml-4">
+					{admin ? (
+						<Link to="/admin" className="btn btn-ghost text-primary">
+							管理者ページ
+						</Link>
+					) : null}
+				</div>
+				<div className="navbar-end mr-4">
+					<Link to="/logout" className="btn btn-ghost text-error">
+						ログアウト
+					</Link>
+				</div>
+			</nav>
 		</>
 	);
 }

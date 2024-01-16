@@ -21,6 +21,13 @@ export const loader = async ({ context, request }: LoaderFunctionArgs) => {
 	const adminUserPromise = getAdmin(context, request);
 	const prisma = prismaClient(context);
 	const itemsPromise = await prisma.item.findMany({
+		include: {
+			purchases: {
+				where: {
+					deletedAt: null,
+				},
+			},
+		},
 		where: {
 			deletedAt: null,
 		},
@@ -103,6 +110,7 @@ export default function Admin() {
 							<th />
 							<th>商品名</th>
 							<th>価格</th>
+							<th>販売数</th>
 							<th>登録日時</th>
 							<th />
 						</tr>
@@ -113,6 +121,7 @@ export default function Admin() {
 								<th>{index + 1}</th>
 								<td>{item.name}</td>
 								<td>&yen; {item.price}</td>
+								<td>{item.purchases.length}</td>
 								<td>{dayjs(item.createdAt).format("YYYY-MM-DD HH:mm")}</td>
 								<td>
 									<button
@@ -153,6 +162,7 @@ export default function Admin() {
 									}
 								/>
 							</td>
+							<td />
 							<td />
 							<td>
 								<button
@@ -220,14 +230,14 @@ export default function Admin() {
 								</button>
 							</Form>
 							<form method="dialog">
-								<button type="button" className="btn">
+								<button type="submit" className="btn">
 									キャンセル
 								</button>
 							</form>
 						</div>
 					</div>
 					<form method="dialog" className="modal-backdrop">
-						<button type="button">close</button>
+						<button type="submit">close</button>
 					</form>
 				</dialog>
 				{items.map((item) => (
@@ -248,14 +258,14 @@ export default function Admin() {
 									</button>
 								</Form>
 								<form method="dialog">
-									<button type="button" className="btn">
+									<button type="submit" className="btn">
 										キャンセル
 									</button>
 								</form>
 							</div>
 						</div>
 						<form method="dialog" className="modal-backdrop">
-							<button type="button">close</button>
+							<button type="submit">close</button>
 						</form>
 					</dialog>
 				))}

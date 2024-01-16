@@ -29,6 +29,18 @@ export default function AdminRoute() {
 				</div>
 			</nav>
 			<Outlet />
+			<nav className="navbar bg-base-100 pb-7">
+				<div className="navbar-start ml-4">
+					<Link to="/user" className="btn btn-ghost text-info">
+						ユーザーページ
+					</Link>
+				</div>
+				<div className="navbar-end mr-4">
+					<Link to="/logout" className="btn btn-ghost text-error">
+						ログアウト
+					</Link>
+				</div>
+			</nav>
 		</>
 	);
 }
