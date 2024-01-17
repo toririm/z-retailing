@@ -127,7 +127,7 @@ export default function Index() {
 				</div>
 			</div>
 			<div className="m-5">
-				<table className="table">
+				<table className="table table-zebra">
 					<thead>
 						<tr>
 							<th />

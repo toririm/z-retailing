@@ -92,9 +92,7 @@ export default function UserHistoryYearMonth() {
 						>
 							{`≪ ${parseInt(prevDate.month)}月`}
 						</Link>
-						<div className="join-item btn btn-sm btn-disabled">
-							{`${year}.${month}`}
-						</div>
+						<div className="join-item btn btn-sm">{`${year}.${month}`}</div>
 						{current > thisDate.add(1, "month").toDate() ? (
 							<Link
 								to={`/user/history/${nextDate.year}/${nextDate.month}`}
@@ -111,7 +109,7 @@ export default function UserHistoryYearMonth() {
 				</div>
 			</div>
 			<div className="overflow-x-auto m-5">
-				<table className="table">
+				<table className="table table-zebra">
 					<thead>
 						<tr>
 							<th />
@@ -124,7 +122,7 @@ export default function UserHistoryYearMonth() {
 						{purchases.map((purchase, index) => (
 							<tr key={purchase.id}>
 								<th>{index + 1}</th>
-								<td>{dayjs(purchase.createdAt).format("M/D HH:mm")}</td>
+								<td>{dayjs(purchase.createdAt).format("M/D H:mm")}</td>
 								<td>{purchase.item.name}</td>
 								<td>&yen; {purchase.item.price}</td>
 							</tr>

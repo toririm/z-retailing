@@ -104,7 +104,7 @@ export default function Admin() {
 	return (
 		<>
 			<div className="overflow-x-auto m-5">
-				<table className="table">
+				<table className="table table-zebra">
 					<thead>
 						<tr>
 							<th />

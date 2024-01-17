@@ -19,16 +19,14 @@ export default function AdminRoute() {
 						Ｚ物販 管理者ページ
 					</Link>
 				</div>
-				<div className="navbar-end">
-					<Link to="/user" className="btn btn-ghost">
-						ユーザーページ
-					</Link>
-					<Link to="/logout" className="btn btn-ghost">
-						ログアウト
+				<div className="navbar-end mr-4">
+					<Link to="/admin/users" className="btn btn-ghost">
+						ユーザー管理
 					</Link>
 				</div>
 			</nav>
 			<Outlet />
+			<div className="divider" />
 			<nav className="navbar bg-base-100 pb-7">
 				<div className="navbar-start ml-4">
 					<Link to="/user" className="btn btn-ghost text-info">
