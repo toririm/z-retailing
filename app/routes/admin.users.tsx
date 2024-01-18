@@ -13,6 +13,11 @@ export const loader = async ({ context, request }: LoaderFunctionArgs) => {
 	return { users };
 };
 
+export const meta = () => [
+	{ title: "ユーザー管理 | Z物販" },
+	{ name: "description", content: "管理者ページです" },
+];
+
 export default function AdminUsersRoute() {
 	const { users } = useLoaderData<typeof loader>();
 	return (
