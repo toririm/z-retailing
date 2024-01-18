@@ -3,6 +3,11 @@ import { Link, useLoaderData } from "@remix-run/react";
 import dayjs from "dayjs";
 import { prismaClient } from "~/utils/prisma.server";
 
+export const meta = () => [
+	{ title: "タイムライン | Z物販" },
+	{ name: "description", content: "最新の購入履歴が閲覧できます" },
+];
+
 export const loader = async ({ context }: LoaderFunctionArgs) => {
 	const prisma = prismaClient(context);
 	const purchases = await prisma.purchase.findMany({

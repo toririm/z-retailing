@@ -5,6 +5,11 @@ import { useState } from "react";
 import { prismaClient } from "~/utils/prisma.server";
 import { getAdmin } from "~/utils/supabase.server";
 
+export const meta = () => [
+	{ title: "ユーザー管理 | Z物販" },
+	{ name: "description", content: "管理者ページです" },
+];
+
 export const loader = async ({
 	context,
 	params,
