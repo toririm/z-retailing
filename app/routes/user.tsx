@@ -49,6 +49,11 @@ export default function UserRoute() {
 						</Link>
 					) : null}
 				</div>
+				<div className="navbar-center">
+					<Link to="/timeline" className="btn btn-ghost">
+						タイムライン
+					</Link>
+				</div>
 				<div className="navbar-end mr-4">
 					<Link to="/logout" className="btn btn-ghost text-error">
 						ログアウト

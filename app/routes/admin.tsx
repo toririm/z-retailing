@@ -20,8 +20,14 @@ export default function AdminRoute() {
 					</Link>
 				</div>
 				<div className="navbar-end mr-4">
+					<Link to="/admin" className="btn btn-ghost">
+						商品管理
+					</Link>
 					<Link to="/admin/users" className="btn btn-ghost">
 						ユーザー管理
+					</Link>
+					<Link to="/admin/timeline" className="btn btn-ghost">
+						購入ログ
 					</Link>
 				</div>
 			</nav>

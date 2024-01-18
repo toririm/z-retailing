@@ -1,14 +1,19 @@
 import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
-import { Link, useLoaderData } from "@remix-run/react";
+import { Link, redirect, useLoaderData } from "@remix-run/react";
 import dayjs from "dayjs";
 import { prismaClient } from "~/utils/prisma.server";
+import { getAdmin } from "~/utils/supabase.server";
 
 export const meta = () => [
-	{ title: "タイムライン | Z物販" },
+	{ title: "管理者タイムライン | Z物販" },
 	{ name: "description", content: "最新の購入履歴が閲覧できます" },
 ];
 
-export const loader = async ({ context }: LoaderFunctionArgs) => {
+export const loader = async ({ context, request }: LoaderFunctionArgs) => {
+	const admin = getAdmin(context, request);
+	if (!admin) {
+		return redirect("/user");
+	}
 	const prisma = prismaClient(context);
 	const purchases = await prisma.purchase.findMany({
 		where: {
@@ -23,6 +28,12 @@ export const loader = async ({ context }: LoaderFunctionArgs) => {
 					price: true,
 				},
 			},
+			user: {
+				select: {
+					id: true,
+					name: true,
+				},
+			},
 		},
 	});
 	const recentPurchases = purchases.slice(0, Math.max(10, purchases.length));
@@ -34,18 +45,6 @@ export default function Timeline() {
 	const purchases = loaderData.purchases.slice().reverse();
 	return (
 		<>
-			<nav className="navbar bg-base-100">
-				<div className="navbar-start">
-					<Link to="/user" className="btn btn-ghost text-xl">
-						Ｚ物販
-					</Link>
-				</div>
-				<div className="navbar-end mr-4">
-					<Link to="/user" className="btn btn-ghost">
-						ホーム
-					</Link>
-				</div>
-			</nav>
 			<div className="m-5">
 				<div className="table table-zebra">
 					<thead>
@@ -59,8 +58,13 @@ export default function Timeline() {
 							<tr key={purchase.id}>
 								<td>{dayjs(purchase.createdAt).format("M/D H:mm")}</td>
 								<td>
-									誰かが
-									<span className="font-bold pl-1">{purchase.item.name}</span>
+									<Link
+										to={`/admin/users/${purchase.user.id}`}
+										className="font-bold pr-1"
+									>
+										{purchase.user.name}
+									</Link>
+									が<span className="font-bold pl-1">{purchase.item.name}</span>
 									<span className="pr-1">（&yen; {purchase.item.price}）</span>
 									を購入したよ！
 								</td>

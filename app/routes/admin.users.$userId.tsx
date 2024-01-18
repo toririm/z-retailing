@@ -1,14 +1,10 @@
 import { type LoaderFunctionArgs, redirect } from "@remix-run/cloudflare";
-import { Link, useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import dayjs from "dayjs";
+import ja from "dayjs/locale/ja";
 import { useState } from "react";
 import { prismaClient } from "~/utils/prisma.server";
 import { getAdmin } from "~/utils/supabase.server";
-
-export const meta = () => [
-	{ title: "ユーザー管理 | Z物販" },
-	{ name: "description", content: "管理者ページです" },
-];
 
 export const loader = async ({
 	context,
@@ -45,7 +41,12 @@ export const loader = async ({
 
 export default function AdminUsersDetails() {
 	const { user } = useLoaderData<typeof loader>();
-	const [current, setCurrent] = useState(dayjs().startOf("month"));
+	dayjs.locale(ja);
+	const defaultMonth =
+		dayjs().date() < 15 // 15日以降は当月、15日以前は先月を表示
+			? dayjs().startOf("month").subtract(1, "month")
+			: dayjs().startOf("month");
+	const [current, setCurrent] = useState(defaultMonth);
 	const goNext = () => setCurrent(current.add(1, "month"));
 	const goPrev = () => setCurrent(current.subtract(1, "month"));
 	const getYM = (date: dayjs.Dayjs) => {
