@@ -111,6 +111,7 @@ export default function Index() {
 			modal("modal-error").showModal();
 		}
 	}, [actionData]);
+	dayjs.locale(ja);
 	return (
 		<>
 			<div className="w-full flex items-center justify-center mt-4 mb-2">
@@ -126,7 +127,7 @@ export default function Index() {
 				</div>
 			</div>
 			<div className="m-5">
-				<table className="table">
+				<table className="table table-zebra">
 					<thead>
 						<tr>
 							<th />
@@ -169,14 +170,14 @@ export default function Index() {
 									</button>
 								</Form>
 								<form method="dialog">
-									<button type="button" className="btn">
+									<button type="submit" className="btn">
 										キャンセル
 									</button>
 								</form>
 							</div>
 						</div>
 						<form method="dialog" className="modal-backdrop">
-							<button type="button">close</button>
+							<button type="submit">close</button>
 						</form>
 					</dialog>
 				))}
@@ -188,18 +189,14 @@ export default function Index() {
 						</h3>
 						<div className="modal-action">
 							<form method="dialog">
-								<button
-									type="button"
-									className="btn"
-									onClick={() => modal("modal-success").close()}
-								>
+								<button type="submit" className="btn">
 									OK
 								</button>
 							</form>
 						</div>
 					</div>
 					<form method="dialog" className="modal-backdrop">
-						<button type="button">close</button>
+						<button type="submit">close</button>
 					</form>
 				</dialog>
 				<dialog className="modal" id="modal-error">
@@ -208,18 +205,14 @@ export default function Index() {
 						<p>{actionData?.errorMsg}</p>
 						<div className="modal-action">
 							<form method="dialog">
-								<button
-									type="button"
-									className="btn"
-									onClick={() => modal("modal-error").close()}
-								>
+								<button type="submit" className="btn">
 									OK
 								</button>
 							</form>
 						</div>
 					</div>
 					<form method="dialog" className="modal-backdrop">
-						<button type="button">close</button>
+						<button type="submit">close</button>
 					</form>
 				</dialog>
 			</div>
