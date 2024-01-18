@@ -10,6 +10,6 @@ export const { getSession, commitSession, destroySession } =
 			path: "/",
 			sameSite: "lax",
 			secrets: ["thisShouldBeSecureValueButIAmStupidSorry"],
-			secure: false,
+			secure: true,
 		},
 	});
