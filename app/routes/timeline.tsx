@@ -20,9 +20,8 @@ export const loader = async ({ context }: LoaderFunctionArgs) => {
 			},
 		},
 	});
-	console.log(purchases[0]);
-	console.log(purchases[0].item);
-	return { purchases };
+	const recentPurchases = purchases.slice(0, Math.max(10, purchases.length));
+	return { purchases: recentPurchases };
 };
 
 export default function Timeline() {

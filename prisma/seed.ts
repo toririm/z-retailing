@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -17,6 +18,36 @@ async function main() {
 		skipDuplicates: true,
 	});
 	console.log({ items });
+	const users = await prisma.user.createMany({
+		data: [
+			{
+				name: "ほげふがたろう",
+				authId: randomUUID(),
+				email: "s1234567@u.tsukuba.ac.jp",
+			},
+			{
+				name: "かっけー",
+				authId: randomUUID(),
+				email: "s9876543@u.tsukuba.ac.jp",
+			},
+			{
+				name: "なす",
+				authId: randomUUID(),
+				email: "s9999999@u.tsukuba.ac.jp",
+			},
+			{
+				name: "ほげふがじろう",
+				authId: randomUUID(),
+				email: "s385931@u.tsukuba.ac.jp",
+			},
+			{
+				name: "キロロ",
+				authId: randomUUID(),
+				email: "s1111111@u.tsukuba.ac.jp",
+			},
+		],
+		skipDuplicates: true,
+	});
 }
 
 main()
