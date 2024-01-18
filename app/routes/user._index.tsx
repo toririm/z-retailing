@@ -11,7 +11,7 @@ import { useEffect } from "react";
 import { modal } from "~/utils/modal.client";
 import { prismaClient } from "~/utils/prisma.server";
 import { badRequest } from "~/utils/request.server";
-import { getUser } from "~/utils/supabase.server";
+import { getAuthUser, getUser } from "~/utils/supabase.server";
 
 export const meta: MetaFunction = () => {
 	return [
@@ -23,7 +23,7 @@ export const meta: MetaFunction = () => {
 export const loader = async ({ context, request }: LoaderFunctionArgs) => {
 	const user = await getUser(context, request);
 	if (!user) {
-		return redirect("/login");
+		return null;
 	}
 	const prisma = prismaClient(context);
 	// 以降のDBアクセスは並列化する
