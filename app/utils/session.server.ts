@@ -6,7 +6,7 @@ export const { getSession, commitSession, destroySession } =
 			name: "z-retailing-supabase-auth",
 
 			httpOnly: true,
-			maxAge: 3600,
+			maxAge: 1209600,
 			path: "/",
 			sameSite: "lax",
 			secrets: ["thisShouldBeSecureValueButIAmStupidSorry"],
