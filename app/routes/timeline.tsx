@@ -30,7 +30,8 @@ export const loader = async ({ context }: LoaderFunctionArgs) => {
 };
 
 export default function Timeline() {
-	const { purchases } = useLoaderData<typeof loader>();
+	const loaderData = useLoaderData<typeof loader>();
+	const purchases = loaderData.purchases.slice().reverse();
 	return (
 		<>
 			<nav className="navbar bg-base-100">
