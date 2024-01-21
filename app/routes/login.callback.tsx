@@ -23,7 +23,7 @@ export const loader = async ({ context, request }: LoaderFunctionArgs) => {
 	});
 	console.log(error);
 	if (!supabaseSession) {
-		return redirect("/login");
+		return redirect("/user");
 	}
 	const userSession = await getSession(request.headers.get("Cookie"));
 	userSession.set("access_token", supabaseSession.access_token);
