@@ -157,7 +157,7 @@ export default function Index() {
 					<dialog key={item.id} className="modal" id={`modal-${item.id}`}>
 						<div className="modal-box">
 							<h3 className="font-bold text-lg">{item.name}を購入しますか？</h3>
-							<p>&yen; {item.price}</p>
+							<p>&yen;{item.price}</p>
 							<div className="modal-action">
 								<Form method="post">
 									<input type="hidden" name="itemId" value={item.id} />
