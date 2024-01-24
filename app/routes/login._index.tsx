@@ -12,7 +12,7 @@ export const meta = () => [
 export const action = async ({ request, context }: ActionFunctionArgs) => {
 	const form = await request.formData();
 	const email = form.get("email");
-	const accept = /^s\d{7}@u.tsukuba.ac.jp$/;
+	const accept = /^s\d{7}@u\.tsukuba\.ac\.jp$/;
 	if (typeof email !== "string") {
 		const errorMsg = "フォームが正しく送信されませんでした";
 		return badRequest({
