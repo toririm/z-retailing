@@ -55,3 +55,6 @@ graph TD;
   %% independant
   /coffee
 ```
+
+## Database Schema
+![Database Schema](schema.png)
