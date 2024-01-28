@@ -23,7 +23,7 @@ export default function AdminUsersRoute() {
 	return (
 		<div className="overflow-x-auto p-4 pl-8">
 			<div className="flex space-x-8">
-				<ul className="menu bg-base-200 w-56 rounded-box">
+				<ul className="menu bg-base-200 w-56 rounded-box flex-nowrap overflow-y-scroll h-[70svh]">
 					{users.map((user) => (
 						<li key={user.id}>
 							<Link
