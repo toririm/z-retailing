@@ -58,7 +58,7 @@ export default function Timeline() {
 					<tbody>
 						{purchases.map((purchase) => (
 							<tr key={purchase.id}>
-								<td>{dayjs.tz(purchase.createdAt).format("M/D H:mm")}</td>
+								<td>{dayjs(purchase.createdAt).tz().format("M/D H:mm")}</td>
 								<td>
 									<Link
 										to={`/admin/users/${purchase.user.id}`}

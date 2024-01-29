@@ -59,7 +59,7 @@ export default function Timeline() {
 					<tbody>
 						{purchases.map((purchase) => (
 							<tr key={purchase.id}>
-								<td>{dayjs.tz(purchase.createdAt).format("M/D H:mm")}</td>
+								<td>{dayjs(purchase.createdAt).tz().format("M/D H:mm")}</td>
 								<td>
 									誰かが
 									<span className="font-bold pl-1">{purchase.item.name}</span>
