@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "check": "bunx @biomejs/biome check .",
-    "build": "remix build",
+    "build": "remix build --sourcemap && sentry-upload-sourcemaps --org myownprojectbytoririm --project javascript-remix",
     "deploy": "wrangler deploy",
     "dev": "remix dev --manual -c \"bun start\"",
     "format": "bunx @biomejs/biome format . --write",
@@ -20,6 +20,7 @@
     "@remix-run/cloudflare": "^2.4.1",
     "@remix-run/css-bundle": "^2.4.1",
     "@remix-run/react": "^2.4.1",
+    "@sentry/remix": "^7.98.0",
     "@supabase/supabase-js": "^2.39.2",
     "dayjs": "^1.11.10",
     "isbot": "^3.6.8",
