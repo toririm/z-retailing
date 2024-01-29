@@ -43,9 +43,9 @@ export default function AdminUsersDetails() {
 	const { user } = useLoaderData<typeof loader>();
 	const dayjs = dayjsJP();
 	const defaultMonth =
-		dayjs().date() < 15 // 15日以降は当月、15日以前は先月を表示
-			? dayjs().startOf("month").subtract(1, "month")
-			: dayjs().startOf("month");
+		dayjs.tz().date() < 15 // 15日以降は当月、15日以前は先月を表示
+			? dayjs.tz().startOf("month").subtract(1, "month")
+			: dayjs.tz().startOf("month");
 	const [current, setCurrent] = useState(defaultMonth);
 	const goNext = () => setCurrent(current.add(1, "month"));
 	const goPrev = () => setCurrent(current.subtract(1, "month"));
@@ -59,7 +59,7 @@ export default function AdminUsersDetails() {
 	const nextDate = () => getYM(current.add(1, "month"));
 	const thisDatePurchases = () =>
 		user.purchases.filter((purchase) =>
-			current.isSame(dayjs(purchase.createdAt), "month"),
+			current.isSame(dayjs.tz(purchase.createdAt), "month"),
 		);
 	return (
 		<>
@@ -74,7 +74,7 @@ export default function AdminUsersDetails() {
 						</h2>
 						<div>{user.email}</div>
 						<div className="stat-desc">
-							登録日時: {dayjs(user.createdAt).format("YYYY/M/D H:mm")}
+							登録日時: {dayjs.tz(user.createdAt).format("YYYY/M/D H:mm")}
 						</div>
 					</div>
 				</div>
@@ -94,7 +94,7 @@ export default function AdminUsersDetails() {
 						<button
 							type="button"
 							className="join-item btn btn-sm"
-							disabled={current.add(1, "month").toDate() > dayjs().toDate()}
+							disabled={current.add(1, "month").toDate() > new Date()}
 							onClick={goNext}
 						>
 							{`${parseInt(nextDate().month)}月 ≫`}
@@ -114,7 +114,7 @@ export default function AdminUsersDetails() {
 						{thisDatePurchases().map((purchase, index) => (
 							<tr key={purchase.id}>
 								<th>{index + 1}</th>
-								<td>{dayjs(purchase.createdAt).format("M/D H:mm")}</td>
+								<td>{dayjs.tz(purchase.createdAt).format("M/D H:mm")}</td>
 								<td>{purchase.item.name}</td>
 								<td>{purchase.item.price}</td>
 							</tr>

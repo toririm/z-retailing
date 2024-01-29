@@ -10,7 +10,7 @@ import { dayjsJP } from "~/utils/dayjs";
 import { modal } from "~/utils/modal.client";
 import { prismaClient } from "~/utils/prisma.server";
 import { badRequest } from "~/utils/request.server";
-import { getAuthUser, getUser } from "~/utils/supabase.server";
+import { getUser } from "~/utils/supabase.server";
 
 export const meta: MetaFunction = () => {
 	return [
@@ -32,8 +32,8 @@ export const loader = async ({ context, request }: LoaderFunctionArgs) => {
 		},
 	});
 	const dayjs = dayjsJP();
-	const startOfMonth = dayjs().startOf("month").toDate();
-	const endOfMonth = dayjs().startOf("month").add(1, "month").toDate();
+	const startOfMonth = dayjs.tz().startOf("month").toDate();
+	const endOfMonth = dayjs.tz().startOf("month").add(1, "month").toDate();
 	console.log(startOfMonth, endOfMonth);
 	const purchasesPromise = prisma.purchase.findMany({
 		include: {
@@ -59,7 +59,7 @@ export const loader = async ({ context, request }: LoaderFunctionArgs) => {
 		total += purchase.item.price;
 	}
 	console.log({ total, items, purchases });
-	const thisMonth = dayjs().month() + 1;
+	const thisMonth = dayjs.tz().month() + 1;
 	return { user, thisMonth, total, items };
 };
 
@@ -101,7 +101,11 @@ export const action = async ({ context, request }: ActionFunctionArgs) => {
 };
 
 export default function Index() {
-	const { user, thisMonth, total, items } = useLoaderData<typeof loader>();
+	const loaderData = useLoaderData<typeof loader>();
+	if (!loaderData) {
+		return <></>;
+	}
+	const { user, thisMonth, total, items } = loaderData;
 	const actionData = useActionData<typeof action>();
 	useEffect(() => {
 		if (actionData?.success) {
