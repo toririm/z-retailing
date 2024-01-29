@@ -49,17 +49,20 @@ export default function Login() {
 							<span className="label-text">大学メールアドレス</span>
 						</div>
 						<div hidden={fullEmail}>
-							<span className="pr-0.5">s</span>
-							<input
-								type="text"
-								className={`input input-bordered w-24 ${
-									actionData?.errorMsg ? "input-error" : ""
-								}`}
-								onChange={(e) => setEmailnum(e.target.value)}
-								autoComplete="off"
-								value={emailnum}
-							/>
-							<span className="pl-0.5">@u.tsukuba.ac.jp</span>
+							<div className="join">
+								<input
+									type="text"
+									className={`input input-bordered w-[6.3rem] join-item ${
+										actionData?.errorMsg ? "input-error" : ""
+									}`}
+									onChange={(e) => setEmailnum(e.target.value)}
+									autoComplete="off"
+									value={emailnum}
+								/>
+								<div className="join-item btn no-animation">
+									@u.tsukuba.ac.jp
+								</div>
+							</div>
 						</div>
 						<input
 							name="email"
@@ -72,7 +75,7 @@ export default function Login() {
 								fullEmail
 									? actionData?.email
 									: emailnum !== ""
-									  ? `s${emailnum}@u.tsukuba.ac.jp`
+									  ? `${emailnum}@u.tsukuba.ac.jp`
 									  : ""
 							}
 							autoComplete="off"
@@ -85,15 +88,17 @@ export default function Login() {
 								</span>
 							) : null}
 						</div>
-						<div className="label">
-							<input
-								type="checkbox"
-								className="toggle toggle-xs"
-								onChange={(e) => setFullEmail(e.target.checked)}
-							/>
-							<span className="label-text-alt">
-								メールアドレス全体を入力する
-							</span>
+						<div className="flex justify-center">
+							<div className="label w-52">
+								<input
+									type="checkbox"
+									className="toggle toggle-xs"
+									onChange={(e) => setFullEmail(e.target.checked)}
+								/>
+								<span className="label-text-alt">
+									メールアドレス全体を入力する
+								</span>
+							</div>
 						</div>
 					</label>
 					<div className="card-actions">
