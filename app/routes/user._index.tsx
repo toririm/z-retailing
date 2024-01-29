@@ -115,7 +115,7 @@ export default function Index() {
 	}, [actionData]);
 	dayjs.extend(utc);
 	dayjs.extend(timezone);
-	dayjs.tz("Asia/Tokyo");
+	dayjs.tz.setDefault("Asia/Tokyo");
 	dayjs.locale(ja);
 	return (
 		<>
