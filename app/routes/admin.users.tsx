@@ -1,5 +1,5 @@
 import { type LoaderFunctionArgs, redirect } from "@remix-run/cloudflare";
-import { Link, Outlet, useLoaderData } from "@remix-run/react";
+import { NavLink, Outlet, useLoaderData } from "@remix-run/react";
 import { prismaClient } from "~/utils/prisma.server";
 import { getAdmin } from "~/utils/supabase.server";
 
@@ -26,12 +26,12 @@ export default function AdminUsersRoute() {
 				<ul className="menu bg-base-200 w-56 rounded-box flex-nowrap overflow-y-scroll h-[70svh]">
 					{users.map((user) => (
 						<li key={user.id}>
-							<Link
+							<NavLink
 								to={`/admin/users/${user.id}`}
-								className={user.admin ? "text-primary" : ""}
+								className={({ isActive }) => (isActive ? "active" : "")}
 							>
-								{user.name}
-							</Link>
+								{user.name} {user.admin && "📢"}
+							</NavLink>
 						</li>
 					))}
 				</ul>
