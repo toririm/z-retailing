@@ -126,7 +126,7 @@ export default function Index() {
 						<p className="stat-value">&yen; {total}</p>
 						<div className="stat-desc flex justify-between w-full">
 							<span>{user.name}さん</span>
-							<span>{dayjs().format("YYYY/M/D H:mm")}</span>
+							<span>{dayjs.tz().format("YYYY/M/D H:mm")}</span>
 						</div>
 					</div>
 				</div>
