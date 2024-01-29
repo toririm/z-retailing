@@ -1,6 +1,7 @@
 import { redirect } from "@remix-run/cloudflare";
 import type { ActionFunctionArgs } from "@remix-run/cloudflare";
 import { Form, useActionData, useNavigation } from "@remix-run/react";
+import { useState } from "react";
 import { badRequest } from "~/utils/request.server";
 import { supabaseClient } from "~/utils/supabase.server";
 
@@ -36,6 +37,8 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
 export default function Login() {
 	const actionData = useActionData<typeof action>();
 	const navigation = useNavigation();
+	const [fullEmail, setFullEmail] = useState(false);
+	const [emailnum, setEmailnum] = useState("");
 	return (
 		<div className="h-screen flex justify-center items-center">
 			<div className="card card-bordered bg-base-100 shadow-xl">
@@ -45,16 +48,35 @@ export default function Login() {
 						<div className="label">
 							<span className="label-text">大学メールアドレス</span>
 						</div>
+						<div hidden={fullEmail}>
+							<span className="pr-0.5">s</span>
+							<input
+								type="text"
+								className={`input input-bordered w-24 ${
+									actionData?.errorMsg ? "input-error" : ""
+								}`}
+								onChange={(e) => setEmailnum(e.target.value)}
+								autoComplete="off"
+								value={emailnum}
+							/>
+							<span className="pl-0.5">@u.tsukuba.ac.jp</span>
+						</div>
 						<input
 							name="email"
 							type="email"
 							placeholder="s9999999@u.tsukuba.ac.jp"
-							className={`input input-bordered${
-								actionData?.errorMsg ? " input-error" : ""
+							className={`input input-bordered ${
+								actionData?.errorMsg ? "input-error" : ""
 							}`}
-							defaultValue={actionData?.email}
+							value={
+								fullEmail
+									? actionData?.email
+									: emailnum !== ""
+									  ? `s${emailnum}@u.tsukuba.ac.jp`
+									  : ""
+							}
 							autoComplete="off"
-							required
+							hidden={!fullEmail}
 						/>
 						<div className="label">
 							{actionData?.errorMsg ? (
@@ -62,6 +84,16 @@ export default function Login() {
 									{actionData.errorMsg}
 								</span>
 							) : null}
+						</div>
+						<div className="label">
+							<input
+								type="checkbox"
+								className="toggle toggle-xs"
+								onChange={(e) => setFullEmail(e.target.checked)}
+							/>
+							<span className="label-text-alt">
+								メールアドレス全体を入力する
+							</span>
 						</div>
 					</label>
 					<div className="card-actions">
