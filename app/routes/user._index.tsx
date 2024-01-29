@@ -4,9 +4,11 @@ import {
 	type MetaFunction,
 	redirect,
 } from "@remix-run/cloudflare";
-import { Form, Link, useActionData, useLoaderData } from "@remix-run/react";
+import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import dayjs from "dayjs";
 import ja from "dayjs/locale/ja";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
 import { useEffect } from "react";
 import { modal } from "~/utils/modal.client";
 import { prismaClient } from "~/utils/prisma.server";
@@ -111,6 +113,9 @@ export default function Index() {
 			modal("modal-error").showModal();
 		}
 	}, [actionData]);
+	dayjs.extend(utc);
+	dayjs.extend(timezone);
+	dayjs.tz("Asia/Tokyo");
 	dayjs.locale(ja);
 	return (
 		<>
