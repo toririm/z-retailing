@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { Link, useLoaderData } from "@remix-run/react";
-import dayjs from "dayjs";
+import { dayjsJP } from "~/utils/dayjs";
 import { prismaClient } from "~/utils/prisma.server";
 
 export const meta = () => [
@@ -32,6 +32,7 @@ export const loader = async ({ context }: LoaderFunctionArgs) => {
 export default function Timeline() {
 	const loaderData = useLoaderData<typeof loader>();
 	const purchases = loaderData.purchases.slice().reverse();
+	const dayjs = dayjsJP();
 	return (
 		<>
 			<nav className="navbar bg-base-100">
@@ -47,7 +48,7 @@ export default function Timeline() {
 				</div>
 			</nav>
 			<div className="m-5">
-				<div className="table table-zebra">
+				<table className="table table-zebra">
 					<thead>
 						<tr>
 							<th>日時</th>
@@ -67,7 +68,7 @@ export default function Timeline() {
 							</tr>
 						))}
 					</tbody>
-				</div>
+				</table>
 			</div>
 		</>
 	);

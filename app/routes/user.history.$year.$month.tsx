@@ -4,8 +4,8 @@ import {
 	redirect,
 } from "@remix-run/cloudflare";
 import { Link, useLoaderData } from "@remix-run/react";
-import dayjs from "dayjs";
-import ja from "dayjs/locale/ja";
+import { type Dayjs } from "dayjs";
+import { dayjsJP } from "~/utils/dayjs";
 import { prismaClient } from "~/utils/prisma.server";
 import { getUser } from "~/utils/supabase.server";
 
@@ -34,7 +34,7 @@ export const loader = async ({
 	if (!user) {
 		return redirect("/login");
 	}
-	dayjs.locale(ja);
+	const dayjs = dayjsJP();
 	const baseDate = dayjs()
 		.year(year)
 		.month(month - 1);
@@ -61,8 +61,8 @@ export const loader = async ({
 
 export default function UserHistoryYearMonth() {
 	const { user, purchases, year, month } = useLoaderData<typeof loader>();
-	dayjs.locale(ja);
-	const getYM = (date: dayjs.Dayjs) => {
+	const dayjs = dayjsJP();
+	const getYM = (date: Dayjs) => {
 		const year = date.year().toString();
 		const month = (date.month() + 1).toString().padStart(2, "0");
 		return { year, month };

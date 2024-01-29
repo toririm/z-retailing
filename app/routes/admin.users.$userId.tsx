@@ -1,8 +1,8 @@
 import { type LoaderFunctionArgs, redirect } from "@remix-run/cloudflare";
 import { useLoaderData } from "@remix-run/react";
-import dayjs from "dayjs";
-import ja from "dayjs/locale/ja";
+import { type Dayjs } from "dayjs";
 import { useState } from "react";
+import { dayjsJP } from "~/utils/dayjs";
 import { prismaClient } from "~/utils/prisma.server";
 import { getAdmin } from "~/utils/supabase.server";
 
@@ -41,7 +41,7 @@ export const loader = async ({
 
 export default function AdminUsersDetails() {
 	const { user } = useLoaderData<typeof loader>();
-	dayjs.locale(ja);
+	const dayjs = dayjsJP();
 	const defaultMonth =
 		dayjs().date() < 15 // 15日以降は当月、15日以前は先月を表示
 			? dayjs().startOf("month").subtract(1, "month")
@@ -49,7 +49,7 @@ export default function AdminUsersDetails() {
 	const [current, setCurrent] = useState(defaultMonth);
 	const goNext = () => setCurrent(current.add(1, "month"));
 	const goPrev = () => setCurrent(current.subtract(1, "month"));
-	const getYM = (date: dayjs.Dayjs) => {
+	const getYM = (date: Dayjs) => {
 		const year = date.year().toString();
 		const month = (date.month() + 1).toString().padStart(2, "0");
 		return { year, month };

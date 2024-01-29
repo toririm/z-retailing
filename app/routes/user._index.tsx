@@ -5,11 +5,8 @@ import {
 	redirect,
 } from "@remix-run/cloudflare";
 import { Form, useActionData, useLoaderData } from "@remix-run/react";
-import dayjs from "dayjs";
-import ja from "dayjs/locale/ja";
-import timezone from "dayjs/plugin/timezone";
-import utc from "dayjs/plugin/utc";
 import { useEffect } from "react";
+import { dayjsJP } from "~/utils/dayjs";
 import { modal } from "~/utils/modal.client";
 import { prismaClient } from "~/utils/prisma.server";
 import { badRequest } from "~/utils/request.server";
@@ -34,7 +31,7 @@ export const loader = async ({ context, request }: LoaderFunctionArgs) => {
 			deletedAt: null,
 		},
 	});
-	dayjs.locale(ja);
+	const dayjs = dayjsJP();
 	const startOfMonth = dayjs().startOf("month").toDate();
 	const endOfMonth = dayjs().startOf("month").add(1, "month").toDate();
 	console.log(startOfMonth, endOfMonth);
@@ -113,10 +110,7 @@ export default function Index() {
 			modal("modal-error").showModal();
 		}
 	}, [actionData]);
-	dayjs.extend(utc);
-	dayjs.extend(timezone);
-	dayjs.tz.setDefault("Asia/Tokyo");
-	dayjs.locale(ja);
+	const dayjs = dayjsJP();
 	return (
 		<>
 			<div className="w-full flex items-center justify-center mt-4 mb-2">

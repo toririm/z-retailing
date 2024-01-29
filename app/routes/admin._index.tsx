@@ -4,9 +4,8 @@ import {
 	redirect,
 } from "@remix-run/cloudflare";
 import { Form, useActionData, useLoaderData } from "@remix-run/react";
-import dayjs from "dayjs";
-import ja from "dayjs/locale/ja";
 import { useState } from "react";
+import { dayjsJP } from "~/utils/dayjs";
 import { modal } from "~/utils/modal.client";
 import { prismaClient } from "~/utils/prisma.server";
 import { badRequest } from "~/utils/request.server";
@@ -100,7 +99,7 @@ export default function Admin() {
 			price: "",
 		});
 	};
-	dayjs.locale(ja);
+	const dayjs = dayjsJP();
 	return (
 		<>
 			<div className="overflow-x-auto m-5">
