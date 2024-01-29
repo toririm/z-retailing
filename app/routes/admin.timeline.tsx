@@ -36,13 +36,14 @@ export const loader = async ({ context, request }: LoaderFunctionArgs) => {
 			},
 		},
 	});
-	const recentPurchases = purchases.slice(0, Math.min(10, purchases.length));
+	const recentPurchases = purchases
+		.slice(-Math.min(10, purchases.length))
+		.reverse();
 	return { purchases: recentPurchases };
 };
 
 export default function Timeline() {
-	const loaderData = useLoaderData<typeof loader>();
-	const purchases = loaderData.purchases.slice().reverse();
+	const { purchases } = useLoaderData<typeof loader>();
 	const dayjs = dayjsJP();
 	return (
 		<>
