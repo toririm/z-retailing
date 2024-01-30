@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { Link, redirect, useLoaderData } from "@remix-run/react";
-import dayjs from "dayjs";
+import { dayjsJP } from "~/utils/dayjs";
 import { prismaClient } from "~/utils/prisma.server";
 import { getAdmin } from "~/utils/supabase.server";
 
@@ -43,10 +43,11 @@ export const loader = async ({ context, request }: LoaderFunctionArgs) => {
 export default function Timeline() {
 	const loaderData = useLoaderData<typeof loader>();
 	const purchases = loaderData.purchases.slice().reverse();
+	const dayjs = dayjsJP();
 	return (
 		<>
 			<div className="m-5">
-				<div className="table table-zebra">
+				<table className="table table-zebra">
 					<thead>
 						<tr>
 							<th>日時</th>
@@ -71,7 +72,7 @@ export default function Timeline() {
 							</tr>
 						))}
 					</tbody>
-				</div>
+				</table>
 			</div>
 		</>
 	);
