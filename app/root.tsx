@@ -29,7 +29,7 @@ export default function App() {
 					<Outlet />
 					<ScrollRestoration />
 					<Scripts />
-					<LiveReload />
+					{/* <LiveReload /> */}
 				</div>
 			</body>
 		</html>
