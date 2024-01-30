@@ -25,7 +25,7 @@ export const loader = async ({ context }: LoaderFunctionArgs) => {
 			},
 		},
 	});
-	const recentPurchases = purchases.slice(0, Math.max(10, purchases.length));
+	const recentPurchases = purchases.slice(0, Math.min(10, purchases.length));
 	return { purchases: recentPurchases };
 };
 
