@@ -24,6 +24,12 @@ export const getAuthUser = async (
 	const supabase = supabaseClient(context);
 	const userSession = await getSession(request.headers.get("Cookie"));
 	if (!userSession.has("access_token")) {
+		return null;
+	}
+	const {
+		data: { user },
+	} = await supabase.auth.getUser(userSession.get("access_token"));
+	if (!user) {
 		if (userSession.has("refresh_token")) {
 			const {
 				data: { session: supabaseSession },
@@ -32,18 +38,14 @@ export const getAuthUser = async (
 				userSession.set("access_token", supabaseSession.access_token);
 				userSession.set("refresh_token", supabaseSession.refresh_token);
 				await commitSession(userSession);
-			} else {
-				return null;
 			}
 		} else {
 			return null;
 		}
-	}
-	const {
-		data: { user },
-	} = await supabase.auth.getUser(userSession.get("access_token"));
-	if (!user) {
-		return null;
+		const {
+			data: { user: refreshedUser },
+		} = await supabase.auth.getUser(userSession.get("access_token"));
+		return refreshedUser;
 	}
 	return user;
 };
