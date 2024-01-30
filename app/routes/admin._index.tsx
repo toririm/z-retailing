@@ -121,7 +121,7 @@ export default function Admin() {
 								<td>{item.name}</td>
 								<td>&yen; {item.price}</td>
 								<td>{item.purchases.length}</td>
-								<td>{dayjs.tz(item.createdAt).format("YYYY-MM-DD HH:mm")}</td>
+								<td>{dayjs(item.createdAt).tz().format("YYYY-MM-DD HH:mm")}</td>
 								<td>
 									<button
 										type="button"

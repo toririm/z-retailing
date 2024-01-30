@@ -59,7 +59,7 @@ export default function AdminUsersDetails() {
 	const nextDate = () => getYM(current.add(1, "month"));
 	const thisDatePurchases = () =>
 		user.purchases.filter((purchase) =>
-			current.isSame(dayjs.tz(purchase.createdAt), "month"),
+			current.isSame(dayjs(purchase.createdAt).tz(), "month"),
 		);
 	return (
 		<>
@@ -74,7 +74,7 @@ export default function AdminUsersDetails() {
 						</h2>
 						<div>{user.email}</div>
 						<div className="stat-desc">
-							登録日時: {dayjs.tz(user.createdAt).format("YYYY/M/D H:mm")}
+							登録日時: {dayjs(user.createdAt).tz().format("YYYY/M/D H:mm")}
 						</div>
 					</div>
 				</div>
@@ -114,7 +114,7 @@ export default function AdminUsersDetails() {
 						{thisDatePurchases().map((purchase, index) => (
 							<tr key={purchase.id}>
 								<th>{index + 1}</th>
-								<td>{dayjs.tz(purchase.createdAt).format("M/D H:mm")}</td>
+								<td>{dayjs(purchase.createdAt).tz().format("M/D H:mm")}</td>
 								<td>{purchase.item.name}</td>
 								<td>{purchase.item.price}</td>
 							</tr>
