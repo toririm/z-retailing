@@ -126,7 +126,7 @@ export default function UserHistoryYearMonth() {
 								<th>{index + 1}</th>
 								<td>{dayjs(purchase.createdAt).format("M/D H:mm")}</td>
 								<td>{purchase.item.name}</td>
-								<td>&yen; {purchase.item.price}</td>
+								<td>&yen;{purchase.item.price}</td>
 							</tr>
 						))}
 						<tr>
@@ -134,7 +134,7 @@ export default function UserHistoryYearMonth() {
 							<td />
 							<th>合計</th>
 							<th>
-								&yen;{" "}
+								&yen;
 								{purchases.reduce(
 									(sum, purchase) => sum + purchase.item.price,
 									0,
