@@ -33,7 +33,9 @@ export const getAuthUser = async (
 		if (userSession.has("refresh_token")) {
 			const {
 				data: { session: supabaseSession },
-			} = await supabase.auth.refreshSession(userSession.get("refresh_token"));
+			} = await supabase.auth.refreshSession({
+				refresh_token: userSession.get("refresh_token"),
+			});
 			if (supabaseSession) {
 				userSession.set("access_token", supabaseSession.access_token);
 				userSession.set("refresh_token", supabaseSession.refresh_token);
