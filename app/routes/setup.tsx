@@ -2,8 +2,7 @@ import type { ActionFunctionArgs } from "@remix-run/cloudflare";
 import { Form, redirect, useActionData, useNavigation } from "@remix-run/react";
 import { prismaClient } from "~/utils/prisma.server";
 import { badRequest } from "~/utils/request.server";
-import { getSession } from "~/utils/session.server";
-import { supabaseClient } from "~/utils/supabase.server";
+import { getUser } from "~/utils/supabase.server";
 
 export const meta = () => [
 	{ title: "ニックネームを入れよう！ | Z物販" },
@@ -19,12 +18,7 @@ export const action = async ({ context, request }: ActionFunctionArgs) => {
 			errorMsg: "フォームが正しく送信されませんでした",
 		});
 	}
-	const supabase = supabaseClient(context);
-	const session = await getSession(request.headers.get("Cookie"));
-	const {
-		data: { user },
-		error,
-	} = await supabase.auth.getUser(session.get("access_token"));
+	const user = await getUser(context, request);
 	const prisma = prismaClient(context);
 	if (!user) {
 		return badRequest({
