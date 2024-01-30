@@ -27,6 +27,7 @@ export const loader = async ({ context, request }: LoaderFunctionArgs) => {
 	}
 	const userSession = await getSession(request.headers.get("Cookie"));
 	userSession.set("access_token", supabaseSession.access_token);
+	userSession.set("reflesh_token", supabaseSession.refresh_token);
 	return redirect("/user", {
 		headers: {
 			"Set-Cookie": await commitSession(userSession),

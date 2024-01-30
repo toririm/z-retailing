@@ -1,8 +1,8 @@
-import { AppLoadContext, redirect } from "@remix-run/cloudflare";
+import { type AppLoadContext, redirect } from "@remix-run/cloudflare";
 import { createClient } from "@supabase/supabase-js";
 import { Env } from "~/env";
 import { prismaClient } from "./prisma.server";
-import { destroySession, getSession } from "./session.server";
+import { commitSession, destroySession, getSession } from "./session.server";
 
 export const supabaseClient = (context: AppLoadContext) => {
 	const env = context.env as Env;
@@ -24,7 +24,20 @@ export const getAuthUser = async (
 	const supabase = supabaseClient(context);
 	const userSession = await getSession(request.headers.get("Cookie"));
 	if (!userSession.has("access_token")) {
-		return null;
+		if (userSession.has("refresh_token")) {
+			const {
+				data: { session: supabaseSession },
+			} = await supabase.auth.refreshSession(userSession.get("refresh_token"));
+			if (supabaseSession) {
+				userSession.set("access_token", supabaseSession.access_token);
+				userSession.set("refresh_token", supabaseSession.refresh_token);
+				await commitSession(userSession);
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
 	}
 	const {
 		data: { user },
