@@ -35,7 +35,8 @@ export const loader = async ({
 		return redirect("/login");
 	}
 	const dayjs = dayjsJP();
-	const baseDate = dayjs()
+	const baseDate = dayjs
+		.tz()
 		.year(year)
 		.month(month - 1);
 	const startOfMonth = baseDate.startOf("month").toDate();
@@ -67,7 +68,8 @@ export default function UserHistoryYearMonth() {
 		const month = (date.month() + 1).toString().padStart(2, "0");
 		return { year, month };
 	};
-	const thisDate = dayjs()
+	const thisDate = dayjs
+		.tz()
 		.year(year)
 		.month(month - 1)
 		.startOf("month");
