@@ -1,5 +1,6 @@
+import { type User } from "@prisma/client";
 import { type AppLoadContext, redirect } from "@remix-run/cloudflare";
-import { createClient } from "@supabase/supabase-js";
+import { type User as AuthUser, createClient } from "@supabase/supabase-js";
 import { Env } from "~/env";
 import { prismaClient } from "./prisma.server";
 import { commitSession, destroySession, getSession } from "./session.server";
@@ -20,7 +21,7 @@ export const supabaseClient = (context: AppLoadContext) => {
 export const getAuthUser = async (
 	context: AppLoadContext,
 	request: Request,
-) => {
+): Promise<AuthUser | null> => {
 	const supabase = supabaseClient(context);
 	const userSession = await getSession(request.headers.get("Cookie"));
 	if (!userSession.has("access_token")) {
@@ -61,7 +62,10 @@ export const logout = async (request: Request, redirectUrl: string) => {
 	});
 };
 
-export const getAdmin = async (context: AppLoadContext, request: Request) => {
+export const getAdmin = async (
+	context: AppLoadContext,
+	request: Request,
+): Promise<User | null> => {
 	const authUser = await getAuthUser(context, request);
 	if (!authUser) {
 		return null;
@@ -76,7 +80,10 @@ export const getAdmin = async (context: AppLoadContext, request: Request) => {
 	return adminUser;
 };
 
-export const getUser = async (context: AppLoadContext, request: Request) => {
+export const getUser = async (
+	context: AppLoadContext,
+	request: Request,
+): Promise<User | null> => {
 	const authUser = await getAuthUser(context, request);
 	if (!authUser) {
 		return null;
