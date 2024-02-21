@@ -10,15 +10,22 @@ import { StrictMode, startTransition, useEffect } from "react";
 import { hydrateRoot } from "react-dom/client";
 
 Sentry.init({
-    dsn: "https://4f3a551edeb01c445e8f9d2fc6ca19b9@o4506624494665728.ingest.sentry.io/4506654415126528",
-    tracesSampleRate: 1,
-    replaysSessionSampleRate: 0.1,
-    replaysOnErrorSampleRate: 1,
+	dsn: "https://4f3a551edeb01c445e8f9d2fc6ca19b9@o4506624494665728.ingest.sentry.io/4506654415126528",
+	tracesSampleRate: 1,
+	replaysSessionSampleRate: 0.1,
+	replaysOnErrorSampleRate: 1,
 
-    integrations: [new Sentry.BrowserTracing({
-        routingInstrumentation: Sentry.remixRouterInstrumentation(useEffect, useLocation, useMatches)
-    }), new Sentry.Replay()]
-})
+	integrations: [
+		new Sentry.BrowserTracing({
+			routingInstrumentation: Sentry.remixRouterInstrumentation(
+				useEffect,
+				useLocation,
+				useMatches,
+			),
+		}),
+		new Sentry.Replay(),
+	],
+});
 
 startTransition(() => {
 	hydrateRoot(

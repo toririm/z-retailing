@@ -1,7 +1,15 @@
-import { captureRemixErrorBoundaryError } from "@sentry/remix";
 import type { LinksFunction } from "@remix-run/cloudflare";
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useRouteError } from "@remix-run/react";
-
+import {
+	Links,
+	// LiveReload,
+	Meta,
+	Outlet,
+	Scripts,
+	ScrollRestoration,
+	useNavigation,
+	useRouteError,
+} from "@remix-run/react";
+import { captureRemixErrorBoundaryError } from "@sentry/remix";
 import tailwind from "~/tailwind.css";
 
 export const links: LinksFunction = () => [
@@ -10,12 +18,13 @@ export const links: LinksFunction = () => [
 ];
 
 export const ErrorBoundary = () => {
-  const error = useRouteError();
-  captureRemixErrorBoundaryError(error);
-  return <div>Something went wrong</div>;
+	const error = useRouteError();
+	captureRemixErrorBoundaryError(error);
+	return <div>Something went wrong</div>;
 };
 
 export default function App() {
+	const navigation = useNavigation();
 	return (
 		<html lang="ja">
 			<head>
@@ -26,10 +35,18 @@ export default function App() {
 			</head>
 			<body>
 				<div role="application">
-					<Outlet />
+					{navigation.state === "loading" ? (
+						<div className="h-screen flex items-center justify-center">
+							<span className="loading loading-spinner loading-lg" />
+						</div>
+					) : (
+						<Outlet />
+					)}
 					<ScrollRestoration />
 					<Scripts />
-					{/* <LiveReload /> */}
+					{
+						// <LiveReload />
+					}
 				</div>
 			</body>
 		</html>
