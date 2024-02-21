@@ -1,6 +1,6 @@
 import { redirect } from "@remix-run/cloudflare";
 import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
-import { Link, Outlet, useLoaderData } from "@remix-run/react";
+import { Link, Outlet, useLoaderData, useNavigation } from "@remix-run/react";
 import { prismaClient } from "~/utils/prisma.server";
 import { getAuthUser } from "~/utils/supabase.server";
 
@@ -21,6 +21,7 @@ export const loader = async ({ context, request }: LoaderFunctionArgs) => {
 };
 
 export default function UserRoute() {
+	const navigation = useNavigation();
 	const { admin } = useLoaderData<typeof loader>();
 	return (
 		<>
@@ -39,7 +40,13 @@ export default function UserRoute() {
 					</Link>
 				</div>
 			</nav>
-			<Outlet />
+			{navigation.state === "loading" ? (
+				<div className="h-screen flex items-center justify-center">
+					<span className="loading loading-spinner loading-lg" />
+				</div>
+			) : (
+				<Outlet />
+			)}
 			<div className="divider" />
 			<nav className="navbar bg-base-100 pb-7">
 				<div className="navbar-start ml-4">
