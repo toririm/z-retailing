@@ -6,7 +6,6 @@ import {
 	Outlet,
 	Scripts,
 	ScrollRestoration,
-	useNavigation,
 	useRouteError,
 } from "@remix-run/react";
 import { captureRemixErrorBoundaryError } from "@sentry/remix";
@@ -24,7 +23,6 @@ export const ErrorBoundary = () => {
 };
 
 export default function App() {
-	const navigation = useNavigation();
 	return (
 		<html lang="ja">
 			<head>
@@ -35,13 +33,7 @@ export default function App() {
 			</head>
 			<body>
 				<div role="application">
-					{navigation.state === "loading" ? (
-						<div className="h-screen flex items-center justify-center">
-							<span className="loading loading-spinner loading-lg" />
-						</div>
-					) : (
-						<Outlet />
-					)}
+					<Outlet />
 					<ScrollRestoration />
 					<Scripts />
 					{
