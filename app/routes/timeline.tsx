@@ -25,10 +25,7 @@ export const loader = async ({ context }: LoaderFunctionArgs) => {
 			},
 		},
 	});
-	const recentPurchases = purchases
-		.slice(-Math.min(10, purchases.length))
-		.reverse();
-	return { purchases: recentPurchases };
+	return { purchases: purchases.reverse() };
 };
 
 export default function Timeline() {
@@ -48,9 +45,9 @@ export default function Timeline() {
 					</Link>
 				</div>
 			</nav>
-			<div className="m-5">
+			<div className="m-5 overflow-y-scroll h-[85svh]">
 				<table className="table table-zebra">
-					<thead>
+					<thead className="sticky top-0 bg-base-100">
 						<tr>
 							<th>日時</th>
 							<th>内容</th>
