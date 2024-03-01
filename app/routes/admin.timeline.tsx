@@ -12,7 +12,7 @@ export const meta = () => [
 export const loader = async ({ context, request }: LoaderFunctionArgs) => {
 	const admin = getAdmin(context, request);
 	if (!admin) {
-		// return redirect("/user");
+		return redirect("/user");
 	}
 	const prisma = prismaClient(context);
 	const purchases = await prisma.purchase.findMany({

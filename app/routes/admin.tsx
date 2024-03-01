@@ -5,7 +5,7 @@ import { getAdmin } from "~/utils/supabase.server";
 export const loader = async ({ context, request }: LoaderFunctionArgs) => {
 	const adminUser = await getAdmin(context, request);
 	if (!adminUser) {
-		// return redirect("/user");
+		return redirect("/user");
 	}
 	return {};
 };
